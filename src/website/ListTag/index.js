@@ -1,27 +1,82 @@
-import {  Button, Flex, HStack, Image, Spacer, Stack, Text } from "@chakra-ui/react";
-import React from "react";
+import { Box, Center, Heading, SimpleGrid } from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useOutletContext, useParams } from "react-router-dom";
+import Tag from "./Tag";
+import Pagination from "react-js-pagination";
+import "../ListTag/pagination.css";
 
-const ListTag=(props)=>{
-   return(
-    <Stack bg='rgba(255,255,255,0.95)' h='200px' w='370px' p='10px' borderRadius={'7px'}
-    cursor='pointer' _hover={{ bg:'white',transform:'scale(1.07) rotate(3deg)'}}>
-    <Flex alignItems='center'mb='15px'>
-        <Image src={require('../../imgs/logo.png')} w='35px' h='35px'/>
-        <Text ml='5px' color={'#08D9D6'}>ENGLISH <span style={{color:'#FF2E63'}}>ACADEMY</span></Text>
-    </Flex>
-    <Text  color={'black'} fontWeight='bold'>Unit {props.data}</Text>
-    <Text color={'gray'} fontSize='17px'>Từ vựng: 18</Text>
-    <Spacer/>
-    <HStack alignItems='center' w='350px' >
-        <Image src={require('../../imgs/img1.png')} w='35px' h='35px' borderRadius='50%'/>
-        <Text ml='5px' fontSize={'17px'} color={'black'}>John Wick</Text>
-        <Spacer/>
-        <Button  fontWeight={'bold'} color='white' bgColor={'#FF2E63'}
-        colorScheme='red' size='xs'>BẮT ĐẦU</Button>
-    </HStack>
-    </Stack>
-  
-   )
-}
+const ListTag = () => {
+  const params = useParams();
+  const context = useOutletContext();
+  const navigate = useNavigate();
+  let CurrentPage = 0;
+  if (params.id) CurrentPage = Number(params.id);
+  else CurrentPage = 1;
+  const data = [
+    ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
+    ["13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24"],
+    ["25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36"],
+    ["37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48"],
+    ["49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59", "60"],
+    ["61", "62", "63", "64", "65", "66", "67", "68", "69", "70", "71", "72"],
+    ["73", "74", "75", "76", "77", "78", "79", "80", "81", "82", "83", "84"],
+    ["85", "86", "87", "88", "89", "90"],
+  ];
+  const list = data[CurrentPage - 1].map((item) => (
+    <Tag data={item} left={context[0]} />
+  ));
 
-export default ListTag
+  const getTestsData = (pageNumber = 1) => {
+    if (CurrentPage !== pageNumber) {
+      navigate(`/page/${pageNumber}`);
+    }
+  };
+
+  const [sizeText, setSizeText] = useState("20px");
+  useEffect(() => {
+    if (context[0] === "0") {
+      setSizeText("17px");
+    } else {
+      setSizeText("20px");
+    }
+  }, [context[0]]);
+  return (
+    <Box>
+      <Heading fontSize={sizeText} color="white">
+        WELCOME TO <span style={{ color: "#08D9D6" }}>ENGLISH </span>
+        <span style={{ color: "#FF2E63" }}>ACADEMY</span>!
+      </Heading>
+      <Heading fontSize={sizeText} color="white" ml="75%" mb="40px">
+        XIN CHÀO JOHN WICK!
+      </Heading>
+      <Center mt="40px">
+        <Box>
+          <SimpleGrid columns={3} spacing={"5"}>
+            {list}
+          </SimpleGrid>
+          <Center color={"white"} mt={5}>
+            <Pagination
+              hideDisabled
+              activePage={CurrentPage}
+              totalItemsCount={90}
+              itemsCountPerPage={12}
+              itemClass="page-item"
+              linkClass="page-link"
+              itemClassNext="next-item"
+              itemClassPrev="prev-item"
+              innerClass="container"
+              linkClassFirst="first-link"
+              linkClassLast="last-link"
+              activeClass="paginationActive"
+              activeLinkClass="linkActive"
+              disabledClass="disable"
+              onChange={(pageNumber) => getTestsData(pageNumber)}
+            />
+          </Center>
+        </Box>
+      </Center>
+    </Box>
+  );
+};
+
+export default ListTag;
