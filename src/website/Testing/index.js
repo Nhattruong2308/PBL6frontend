@@ -1,42 +1,11 @@
-import {
-  Box,
-  Button,
-  Center,
-  Flex,
-  Image,
-  SimpleGrid,
-  Text,
-} from "@chakra-ui/react";
+import { Box, Button, Center, Flex, Image, Text } from "@chakra-ui/react";
 import React, { useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import Questions from "./Questions";
-import Pagination from "react-js-pagination";
-import "../Testing/pagination.css";
+import { Outlet } from "react-router-dom";
 
 export default function Testing() {
   useEffect(() => {
     document.title = "Testing - English Academy";
   }, []);
-  const params = useParams();
-  const navigate = useNavigate();
-  let CurrentPage = Number(params.id);
-  const data = [
-    ["1", "2", "3", "4", "5"],
-    ["6", "7", "8", "9", "10"],
-    ["11", "12", "13", "14", "15"],
-    ["16", "17", "18", "19", "20"],
-    ["21", "22", "23", "24", "25"],
-    ["26", "27", "28", "29", "30"],
-    ["31", "32", "33", "34", "35"],
-    ["36", "37", "38", "39", "40"],
-  ];
-
-  const list = data[CurrentPage - 1].map((item) => <Questions data={item} />);
-  const getTestsData = (pageNumber = 1) => {
-    if (CurrentPage !== pageNumber) {
-      navigate(`/testing/${pageNumber}`);
-    }
-  };
 
   const handleTabClose = (event) => {
     window.close();
@@ -125,31 +94,8 @@ export default function Testing() {
         >
           Kiểm tra Ielts 2022
         </Box>
-        <Box w="100%" bg="white" px={8}>
-          <Box py={5} w="100%">
-            <SimpleGrid columns={1} spacing={"5"}>
-              {list}
-            </SimpleGrid>
-          </Box>
-          <Box py={3} color="white">
-            <Pagination
-              hideDisabled
-              activePage={CurrentPage}
-              totalItemsCount={40}
-              itemsCountPerPage={5}
-              itemClass="page-item"
-              linkClass="page-link"
-              itemClassNext="next-item"
-              itemClassPrev="prev-item"
-              innerClass="container"
-              linkClassFirst="first-link"
-              linkClassLast="last-link"
-              activeClass="paginationActive"
-              activeLinkClass="linkActive"
-              disabledClass="disable"
-              onChange={(pageNumber) => getTestsData(pageNumber)}
-            />
-          </Box>
+        <Box w="100%" bg="white" px={8} py={3}>
+          <Outlet />
         </Box>
       </Box>
     </Flex>

@@ -105,8 +105,10 @@ function Home() {
                     Bài test đã lưu
                   </ListItem>
                   <ListItem _hover={{ color: "#08D9D6" }}>
-                    <ListIcon as={HiWrenchScrewdriver} />
-                    Quản lý bài test
+                    <Link to="/tests-manage">
+                      <ListIcon as={HiWrenchScrewdriver} />
+                      Quản lý bài test
+                    </Link>
                   </ListItem>
                   <ListItem _hover={{ color: "#08D9D6" }} onClick={openDialog}>
                     <ListIcon as={AiFillLock} />

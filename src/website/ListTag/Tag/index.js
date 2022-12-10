@@ -57,7 +57,7 @@ const Tag = (props) => {
             fontSize="12px"
             onClick={() => {
               window.open(
-                `/testing/${1}`,
+                `/testing/page/${1}`,
                 "_blank",
                 "location=yes,resizable=no,status=yes,height=5000,width=5000"
               );
@@ -115,7 +115,7 @@ const Tag = (props) => {
           fontSize="15px"
           onClick={() => {
             window.open(
-              `/testing/${1}`,
+              `/testing/page/${1}`,
               "_blank",
               "location=yes,resizable=no,status=no,titlebar=no,height=5000,width=5000"
             );

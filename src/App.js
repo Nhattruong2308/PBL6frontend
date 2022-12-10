@@ -9,6 +9,8 @@ import ListTag from "./website/ListTag";
 import Profile from "./website/Profile";
 import ImgPredict from "./website/ImgPredict";
 import Testing from "./website/Testing";
+import QuestionsTest from "./website/QuestionsTest";
+import TestManage from "./website/TestManage";
 function App() {
   return (
     <Box className="bg" scrollBehavior={"smooth"}>
@@ -19,10 +21,13 @@ function App() {
           <Route path="page/:id" element={<ListTag />} />
           <Route path="profile" element={<Profile />} />
           <Route path="predict" element={<ImgPredict />} />
+          <Route path="tests-manage" element={<TestManage />} />
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/sign-up" element={<SignUp />} />
-        <Route path="/testing/:id" element={<Testing />} />
+        <Route path="/testing" element={<Testing />}>
+          <Route path="page/:id" element={<QuestionsTest />} />
+        </Route>
       </Routes>
     </Box>
   );
