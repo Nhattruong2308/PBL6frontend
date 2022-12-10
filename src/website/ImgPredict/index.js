@@ -11,13 +11,17 @@ import React, { useCallback, useEffect, useState } from "react";
 import { HiWrenchScrewdriver } from "react-icons/hi2";
 import { useOutletContext } from "react-router-dom";
 import { MdFileUpload } from "react-icons/md";
+import axios from "axios";
 export default function ImgPredict() {
   const [hBox, setHBox] = useState("480px");
   const [hImg, setHImg] = useState("380px");
   const context = useOutletContext();
   const [imgPre, setImgPre] = useState(require("../../imgs/img_predict.png"));
+  const [result, setResult] = useState("");
+  const [img, setImg] = useState("");
   const handlecreateBase64 = useCallback(async (e) => {
     const file = e.target.files[0];
+    setImg(file);
     const base64 = await convertToBase64(file);
     setImgPre(base64);
     e.target.value = "";
@@ -47,6 +51,32 @@ export default function ImgPredict() {
       setHBox("420px");
     }
   }, [context[0]]);
+
+  const PredictImg = () => {
+    const formdata = new FormData();
+    formdata.append("file", img);
+
+    console.log(img);
+    console.log(formdata);
+
+    for (let i of formdata.entries()) {
+      console.log(i[1]);
+    }
+    axios
+      .post("http://127.0.0.1:5000/predict", formdata, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        mode: "no-cors",
+      })
+      .then((res) => {
+        console.log(res.data);
+        setResult(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   return (
     <Center>
       <Box bg={"rgba(37,42,52,0.5)"} w="85%" color="white">
@@ -92,11 +122,11 @@ export default function ImgPredict() {
                   py={1}
                   maxH="40px"
                   overflow={"scroll"}
-                  overflowX="hidden"
-                  overflowY="hidden"
+                  // overflowX="hidden"
+                  // overflowY="hidden"
                 >
                   <Text color="black" fontWeight="bold" fontSize="15px">
-                    The dog is running in the glass
+                    {result}
                   </Text>
                 </Box>
               </Flex>
@@ -128,6 +158,7 @@ export default function ImgPredict() {
               size="sm"
               _hover={{ bg: "red.400" }}
               mb={5}
+              onClick={PredictImg}
             >
               Dự đoán
             </Button>
