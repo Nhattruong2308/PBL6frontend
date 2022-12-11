@@ -14,8 +14,12 @@ import {
 } from "@chakra-ui/react";
 import Footer from "../Footer";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { api } from "../../API/API";
 function Login() {
   const [typeP, setTypeP] = useState("password");
+  const [name, setName] = useState("");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const handleToggle = () => {
     if (typeP === "password") {
@@ -38,7 +42,28 @@ function Login() {
   }, []);
 
   const HandleSubmit = () => {
-    navigate("/");
+    const URL = api + "login"
+    const data = {
+      email: name,
+      password: password,
+    }
+    axios.post(URL,data,
+      {
+        headers:{
+          'Content-Type': 'application/json',
+        }
+      }
+      ).then(
+        res => {
+          console.log(res.data)
+          localStorage.setItem('user', JSON.stringify(res.data))
+          navigate("/");
+        }
+    ).catch(
+      error => {
+        console.log(error)
+      }
+    )
   };
   return (
     <Stack w="100vw" minH="100vh">
@@ -80,6 +105,8 @@ function Login() {
                 focusBorderColor="#08D9D6"
                 w="350px"
                 h="50px"
+                value={name}
+                onChange={(e)=> setName(e.target.value)}
               />
             </Box>
             <Box mb="10px">
@@ -93,6 +120,8 @@ function Login() {
                 focusBorderColor="#08D9D6"
                 w="350px"
                 h="50px"
+                value={password}
+                onChange={(e)=> setPassword(e.target.value)}
               />
             </Box>
             <Box mb="10px">

@@ -23,7 +23,7 @@ function App() {
           <Route path="profile" element={<Profile />} />
           <Route path="predict" element={<ImgPredict />} />
           <Route path="tests-manage" element={<TestManage />} />
-          <Route path="test-info" element={<TestInfo />} />
+          <Route path="test-info/:id" element={<TestInfo />} />
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/sign-up" element={<SignUp />} />

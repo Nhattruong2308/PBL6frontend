@@ -14,10 +14,36 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import React from "react";
+import axios from "axios";
+import React, { useState } from "react";
+import { api } from "../../API/API";
 
 export default function CreateTest() {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [title,setTitle] = useState("")
+  const [duration,setDuration] = useState("")
+  const [total,setTotal] = useState("")
+  const handlesubmit = (e)=> {
+    e.preventDefault()
+    const URL = api + "addexam"
+    const data = {
+      title: title,
+      duration: duration,
+      total_question: total,
+      user_id: JSON.parse(localStorage.getItem('user'))['id']
+    }
+    axios.post(URL,data,
+      {
+        headers:{
+          'Content-Type': 'application/json',
+        }
+      }
+      ).then(
+        res => {
+          console.log(res.data)
+        }
+    )
+  }
   return (
     <>
       <Button
@@ -43,7 +69,7 @@ export default function CreateTest() {
           <ModalCloseButton />
           <Divider />
           <ModalBody>
-            <form>
+            <form onSubmit={handlesubmit}>
               <Box>
                 <Center>
                   <Box>
@@ -56,6 +82,8 @@ export default function CreateTest() {
                       border="4px"
                       type="text"
                       placeholder="Nhập tên bài test"
+                      value={title}
+                      onChange={(e)=> setTitle(e.target.value)}
                     />
                   </Box>
                 </Center>
@@ -71,6 +99,8 @@ export default function CreateTest() {
                       border="4px"
                       type="text"
                       placeholder="Nhập thời lượng bài test"
+                      value={duration}
+                      onChange={(e)=> setDuration(e.target.value)}
                     />
                   </Box>
                 </Center>
@@ -86,6 +116,8 @@ export default function CreateTest() {
                       border="4px"
                       type="text"
                       placeholder="Nhập số lượng câu"
+                      value={total}
+                      onChange={(e)=> setTotal(e.target.value)}
                     />
                   </Box>
                 </Center>
@@ -96,6 +128,7 @@ export default function CreateTest() {
                     colorScheme="blue"
                     bg="#08D9D6"
                     type="submit"
+                    onClick={onClose}
                   >
                     Tạo
                   </Button>

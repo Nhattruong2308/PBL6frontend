@@ -16,15 +16,24 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
+import axios from "axios";
 import React, { useCallback, useState } from "react";
 import { FaEdit } from "react-icons/fa";
 import { IoAddCircle } from "react-icons/io5";
 import { MdFileUpload } from "react-icons/md";
+import { api, api_image } from "../../API/API";
 
-export default function EditQuestion() {
+export default function EditQuestion(props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [imgPre, setImgPre] = useState(require("../../imgs/img_predict.png"));
+  // const [imgPre, setImgPre] = useState(require("../../imgs/img_predict.png"));
+  const [imgPre, setImgPre] = useState(api_image+props.question.image);
   const [img, setImg] = useState("");
+  const [A, setA] = useState(props.question.A);
+  const [B, setB] = useState(props.question.B);
+  const [C, setC] = useState(props.question.C);
+  const [D, setD] = useState(props.question.D);
+  const [answer, setAnswer] = useState(props.question.answer);
+  const [title, setTitle] = useState(props.question.title);
   const handlecreateBase64 = useCallback(async (e) => {
     const file = e.target.files[0];
     setImg(file);
@@ -48,6 +57,58 @@ export default function EditQuestion() {
       };
     });
   };
+  const onSave = () => {
+    const URL = api + `update_question/${props.question.id}`
+    const formdata = new FormData();
+    formdata.append("image", img);
+    formdata.append("title", "Predict this image");
+    formdata.append("A", A);
+    formdata.append("B", B);
+    formdata.append("C", C);
+    formdata.append("D", D);
+    formdata.append("answer", answer);
+    axios
+      .post(URL, formdata, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        }
+      })
+      .then((res) => {
+        console.log(res.data)
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+  const predictImg = ()=> {
+    const formdata = new FormData();
+    formdata.append("file", img);
+
+    console.log(img);
+    console.log(formdata);
+
+    for (let i of formdata.entries()) {
+      console.log(i[1]);
+    }
+    axios
+      .post("http://127.0.0.1:5000/predict", formdata, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        mode: "no-cors",
+      })
+      .then((res) => {
+        console.log(res.data);
+        setAnswer(res.data.answer);
+        setA(res.data.choices[0]);
+        setB(res.data.choices[1]);
+        setC(res.data.choices[2]);
+        setD(res.data.choices[3]);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
   return (
     <>
       <Icon as={FaEdit} cursor="pointer" onClick={onOpen} />
@@ -89,6 +150,8 @@ export default function EditQuestion() {
                         bg="white"
                         borderColor={"#08D9D6"}
                         border="2px"
+                        value={answer}
+                        onChange={(e)=>setAnswer(e.target.value)}
                       />
                     </Flex>
                   </Box>
@@ -120,6 +183,7 @@ export default function EditQuestion() {
                           bg="red.500"
                           size="sm"
                           _hover={{ bg: "red.400" }}
+                          onClick={predictImg}
                         >
                           Submit
                         </Button>
@@ -145,6 +209,8 @@ export default function EditQuestion() {
                             bg="white"
                             borderColor={"#FF2E63"}
                             border="2px"
+                            value={A}
+                            onChange={(e)=>setA(e.target.value)}
                           />
                         </Box>
                         <Box>
@@ -159,6 +225,8 @@ export default function EditQuestion() {
                             bg="white"
                             borderColor={"#FF2E63"}
                             border="2px"
+                            value={B}
+                            onChange={(e)=>setB(e.target.value)}
                           />
                         </Box>
                       </Flex>
@@ -176,6 +244,8 @@ export default function EditQuestion() {
                             bg="white"
                             borderColor={"#FF2E63"}
                             border="2px"
+                            value={C}
+                            onChange={(e)=>setC(e.target.value)}
                           />
                         </Box>
                         <Box>
@@ -190,6 +260,8 @@ export default function EditQuestion() {
                             bg="white"
                             borderColor={"#FF2E63"}
                             border="2px"
+                            value={D}
+                            onChange={(e)=>setD(e.target.value)}
                           />
                         </Box>
                       </Flex>
@@ -202,6 +274,7 @@ export default function EditQuestion() {
                       color="white"
                       mr={4}
                       size="sm"
+                      onClick={onSave}
                     >
                       Lưu
                     </Button>

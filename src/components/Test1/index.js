@@ -7,17 +7,29 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
+import axios from "axios";
 import React, { useState } from "react";
 import { AiFillEye, AiFillDelete } from "react-icons/ai";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { api } from "../../API/API";
 import EditTest from "../../website/EditTest";
 
 export default function Test1(props) {
   const [style, setStyle] = useState({ opacity: 0 });
   const [style2, setStyle2] = useState({ opacity: 1 });
+  const navigate = useNavigate()
+  const onDelete = () => {
+    const URL = api + `delete_exam/${props.data.id}`
+    axios.delete(URL,
+      ).then(
+        res => {
+          console.log(res.data)
+        }
+    )
+  }
   return (
     <Box
-      key={props.data}
+      key={props.data.id}
       onMouseEnter={() => {
         setStyle({ opacity: 1 });
         setStyle2({ opacity: 0.7 });
@@ -28,22 +40,24 @@ export default function Test1(props) {
       }}
     >
       <Flex style={style} pos="absolute" mt="80px" ml="100px" zIndex={10}>
-        <Link to="/test-info">
           <IconButton
             bg="#08D9D6"
             icon={<AiFillEye />}
             colorScheme="blue"
             size="sm"
             mr={2}
+            onClick={()=>{
+              navigate(`/test-info/${props.data.id}`)
+            }}
           />
-        </Link>
-        <EditTest />
+        <EditTest data={props.data} />
         <IconButton
           bg="#FF2E63"
           icon={<AiFillDelete />}
           colorScheme="red"
           size="sm"
           mr={2}
+          onClick={onDelete}
         />
       </Flex>
       <Stack
@@ -62,9 +76,9 @@ export default function Test1(props) {
           </Text>
         </Flex>
 
-        <Text>Unit {props.data}</Text>
+        <Text>{props.data.title}</Text>
         <Text color="gray" fontSize="16px">
-          Số câu: 25
+          Số câu: {props.data.total_question}
         </Text>
 
         <Spacer />
@@ -76,7 +90,7 @@ export default function Test1(props) {
             borderRadius={"50%"}
           />
           <Text ml="5px" fontSize="18px">
-            John Wick
+            {JSON.parse(localStorage.getItem('user'))['name']}
           </Text>
         </Flex>
       </Stack>

@@ -7,7 +7,7 @@ import {
   Spacer,
   Text,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BiArrowBack } from "react-icons/bi";
 import { AiFillDelete } from "react-icons/ai";
 import "../TestInfo/style.css";
@@ -15,10 +15,25 @@ import Pagination from "react-js-pagination";
 import "../TestInfo/pagination.css";
 import CreateQuestion from "../CreateQuestion";
 import EditQuestion from "../EditQuestion";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { api } from "../../API/API";
+import axios from "axios";
 export default function TestInfo() {
   const [CurrentPage, setCurrentPage] = useState(1);
+  const param = useParams()
+  const [testData,setTestData] = useState([])
   let history = useNavigate();
+
+  useEffect(()=>{
+    const URL = api + `questiosns_by_exam/${Number(param.id)}/?page=${CurrentPage}`
+    axios.get(URL).then(
+      res=>{
+        console.log(res.data)
+        setTestData(res.data)
+      }
+    )
+  },[CurrentPage])
+  console.log(testData)
 
   const data = [
     [
@@ -115,7 +130,7 @@ export default function TestInfo() {
   return (
     <Center>
       <Box w="90%">
-        <Box bg="rgba(37,42,52)" minH="50vh" w="100%">
+        <Box bg="rgba(37,42,52)" w="100%">
           <HStack
             color={"white"}
             w="100%"
@@ -135,7 +150,7 @@ export default function TestInfo() {
 
             <Spacer />
             <Text>Thêm question</Text>
-            <CreateQuestion />
+            <CreateQuestion idTest = {Number(param.id)} />
           </HStack>
           <Box className="table-question">
             <table bgcolor="white" style={{ width: "100%" }}>
@@ -148,31 +163,40 @@ export default function TestInfo() {
                 <th>Đáp án D</th>
                 <th>Action</th>
               </tr>
-              {data[CurrentPage - 1].map((i) => {
+              {testData.data?.map((i) => {
                 return (
                   <tr>
-                    <td>1</td>
-                    <td>{i.dsc}</td>
-                    <td style={i.to === "A" ? { background: "#78FF9E" } : {}}>
+                    <td>{i.exam_id}</td>
+                    <td>{i.title}</td>
+                    <td style={i.answer === i.A ? { background: "#78FF9E" } : {}}>
                       {i.A}
                     </td>
-                    <td style={i.to === "B" ? { background: "#78FF9E" } : {}}>
+                    <td style={i.answer === i.B ? { background: "#78FF9E" } : {}}>
                       {i.B}
                     </td>
-                    <td style={i.to === "C" ? { background: "#78FF9E" } : {}}>
+                    <td style={i.answer === i.C ? { background: "#78FF9E" } : {}}>
                       {i.C}
                     </td>
-                    <td style={i.to === "D" ? { background: "#78FF9E" } : {}}>
+                    <td style={i.answer === i.D ? { background: "#78FF9E" } : {}}>
                       {i.D}
                     </td>
                     <td>
                       <Center>
                         <Flex>
-                          <EditQuestion />
+                          <EditQuestion question = {i} />
                           <Icon
                             as={AiFillDelete}
                             color="red"
                             cursor={"pointer"}
+                            onClick={
+                                () => {
+                                const URL = api + `delete_question/${Number(i.id)}`
+                                axios.delete(URL).then(
+                                  res=>{
+                                    console.log(res.data)
+                                  }
+                                )}
+                            }
                           />
                         </Flex>
                       </Center>
@@ -187,7 +211,7 @@ export default function TestInfo() {
             <Pagination
               hideDisabled
               activePage={CurrentPage}
-              totalItemsCount={10}
+              totalItemsCount={testData.total}
               itemsCountPerPage={5}
               itemClass="page-item"
               linkClass="page-link"

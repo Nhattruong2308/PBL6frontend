@@ -14,11 +14,36 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import React from "react";
+import axios from "axios";
+import React, { useState } from "react";
 import { AiFillEdit } from "react-icons/ai";
+import { api } from "../../API/API";
 
-export default function EditTest() {
+export default function EditTest(props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [title,setTitle] = useState(props.data.title)
+  const [duration,setDuration] = useState(props.data.duration)
+  const [total,setTotal] = useState(props.data.total_question)
+  const handlesubmit = (e)=> {
+    e.preventDefault()
+    const URL = api + `update_exam/${props.data.id}`
+    const data = {
+      title: title,
+      duration: duration,
+      total_question: total,
+    }
+    axios.put(URL,data,
+      {
+        headers:{
+          'Content-Type': 'application/json',
+        }
+      }
+      ).then(
+        res => {
+          console.log(res.data)
+        }
+    )
+  }
   return (
     <>
       <IconButton
@@ -42,7 +67,7 @@ export default function EditTest() {
           <ModalCloseButton />
           <Divider />
           <ModalBody>
-            <form>
+            <form onSubmit={handlesubmit}>
               <Box>
                 <Center>
                   <Box>
@@ -55,6 +80,8 @@ export default function EditTest() {
                       border="4px"
                       type="text"
                       placeholder="Nhập tên bài test"
+                      value={title}
+                      onChange={(e)=> setTitle(e.target.value)}
                     />
                   </Box>
                 </Center>
@@ -70,6 +97,8 @@ export default function EditTest() {
                       border="4px"
                       type="text"
                       placeholder="Nhập thời lượng bài test"
+                      value={duration}
+                      onChange={(e)=> setDuration(e.target.value)}
                     />
                   </Box>
                 </Center>
@@ -85,6 +114,8 @@ export default function EditTest() {
                       border="4px"
                       type="text"
                       placeholder="Nhập số lượng câu"
+                      value={total}
+                      onChange={(e)=> setTotal(e.target.value)}
                     />
                   </Box>
                 </Center>
@@ -95,6 +126,7 @@ export default function EditTest() {
                     colorScheme="blue"
                     bg="#08D9D6"
                     type="submit"
+                    onClick={onClose}
                   >
                     Sửa
                   </Button>

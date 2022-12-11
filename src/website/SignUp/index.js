@@ -14,8 +14,14 @@ import {
 } from "@chakra-ui/react";
 import Footer from "../Footer";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { api } from "../../API/API";
 function SignUp() {
   const [typeP, setTypeP] = useState("password");
+  const [name, setName] = useState();
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+  const [password2, setPassword2] = useState();
   const navigate = useNavigate();
   const handleToggle = () => {
     if (typeP === "password") {
@@ -37,6 +43,24 @@ function SignUp() {
     };
   }, []);
   const HandleSubmit = () => {
+    const URL = api + "register"
+
+    const data = {
+      name: name,
+      email: email,
+      password: password,
+    }
+    axios.post(URL, data,
+      {
+        headers:{
+          'Content-Type': 'application/json',
+        }
+      }
+      ).then(
+        res => {
+          console.log(res.data)
+        }
+    )
     navigate("/login");
   };
   return (
@@ -74,6 +98,8 @@ function SignUp() {
                 placeholder="Nhập tên tài khoản"
                 color="#FF2E63"
                 border="4px"
+                value={name}
+                onChange={(e)=>{setName(e.target.value)}}
                 borderColor={"#FF2E63"}
                 focusBorderColor="#08D9D6"
                 w="350px"
@@ -85,6 +111,8 @@ function SignUp() {
               <Input
                 type="email"
                 placeholder="Nhập Email"
+                value={email}
+                onChange={(e)=>{setEmail(e.target.value)}}
                 color="#FF2E63"
                 border="4px"
                 borderColor={"#FF2E63"}
@@ -98,6 +126,8 @@ function SignUp() {
               <Input
                 type={typeP}
                 placeholder="Nhập mật khẩu"
+                value={password}
+                onChange={(e)=>{setPassword(e.target.value)}}
                 color="#FF2E63"
                 border="4px"
                 borderColor={"#FF2E63"}
@@ -111,6 +141,8 @@ function SignUp() {
               <Input
                 type={typeP}
                 placeholder="Nhập mật khẩu xác nhận"
+                value={password2}
+                onChange={(e)=>{setPassword2(e.target.value)}}
                 color="#FF2E63"
                 border="4px"
                 borderColor={"#FF2E63"}

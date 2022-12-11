@@ -8,16 +8,33 @@ import {
   Spacer,
   Text,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import { HiWrenchScrewdriver } from "react-icons/hi2";
 import CreateTest from "../CreateTest";
 import Test1 from "../../components/Test1";
 import Test2 from "../../components/Test2";
+import axios from "axios";
+import { api } from "../../API/API";
 
 export default function TestManage() {
   const context = useOutletContext();
   const data = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
+  const [exam,setExam] = useState([])
+  useEffect(()=>{
+    const URL = api + `exams_by_user/${JSON.parse(localStorage.getItem('user'))['id']}`
+
+    axios.get(URL).then(
+      res => {
+        console.log(res.data)
+        setExam(res.data)
+      }
+    )
+  },[])
+  useEffect(()=>{
+    console.log(exam)
+  },[exam])
+  console.log(exam)
 
   if (context[0] === "0")
     return (
@@ -44,7 +61,7 @@ export default function TestManage() {
             </HStack>
             <Center>
               <SimpleGrid columns={2} spacing={"6"} p={6}>
-                {data.map((item) => (
+                {exam.data?.map((item) => (
                   <Test1 data={item} />
                 ))}
               </SimpleGrid>
@@ -72,7 +89,7 @@ export default function TestManage() {
           </HStack>
           <Center>
             <SimpleGrid columns={2} spacing={"8"} p={6}>
-              {data.map((item) => (
+              {exam.data?.map((item) => (
                 <Test2 data={item} />
               ))}
             </SimpleGrid>
