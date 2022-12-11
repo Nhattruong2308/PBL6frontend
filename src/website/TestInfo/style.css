@@ -1,0 +1,11 @@
+.table-question table,
+th,
+td {
+  border: 1px solid;
+  font-size: 18px;
+}
+.table-question td,
+th {
+  padding: 5px;
+  text-align: center;
+}
