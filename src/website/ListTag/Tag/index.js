@@ -7,15 +7,17 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
+import axios from "axios";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { api } from "../../../API/API";
 
 const Tag = (props) => {
   const navigate = useNavigate();
   if (props.left === "0") {
     return (
       <Stack
-        key={props.data}
+        key={props.data.id}
         bg="#FEF6E4"
         h="165px"
         w="300px"
@@ -35,10 +37,10 @@ const Tag = (props) => {
           </Text>
         </Flex>
         <Text color={"#001858"} fontWeight="bold" fontSize="16px">
-          Unit {props.data}
+          {props.data.title}
         </Text>
         <Text color={"#55423D"} fontSize="14px">
-          Từ vựng: 18
+          Số câu: {props.data.total_question}
         </Text>
         <Spacer />
         <HStack alignItems="center" w="284px">
@@ -61,12 +63,30 @@ const Tag = (props) => {
             h="24px"
             fontSize="12px"
             onClick={() => {
-              if (localStorage.getItem("user"))
-                window.open(
-                  `/testing/page/${1}`,
-                  "_blank",
-                  "location=yes,resizable=no,status=yes,height=5000,width=5000"
-                );
+              if (localStorage.getItem("user")){
+                localStorage.setItem('test',JSON.stringify(props.data))
+                const URL_2 = api + "Enroll_exam"
+                const data_2 = {
+                  user_id : Number(JSON.parse(localStorage.getItem('user'))['id']),
+                  exam_id : Number(props.data.id),
+                }
+                console.log(data_2)
+                axios.get(URL_2, {
+                  params: {
+                    user_id : Number(JSON.parse(localStorage.getItem('user'))['id']),
+                    exam_id : Number(props.data.id),
+                  }
+                }).then(
+                  res => {
+                    console.log(res.data)
+                    window.open(
+                      `/testing/page/${1}`,
+                      "_blank",
+                      "location=yes,resizable=no,status=yes,height=5000,width=5000"
+                    );
+                  }
+                )
+              }
               else navigate("/login");
             }}
           >
@@ -78,7 +98,7 @@ const Tag = (props) => {
   }
   return (
     <Stack
-      key={props.data}
+      key={props.data.id}
       bg="#FEF6E4"
       h="200px"
       w="370px"
@@ -98,10 +118,10 @@ const Tag = (props) => {
         </Text>
       </Flex>
       <Text color={"#001858"} fontWeight="bold">
-        Unit {props.data}
+        {props.data.title}
       </Text>
       <Text color={"#55423D"} fontSize="17px">
-        Từ vựng: 18
+        Số câu: {props.data.total_question}
       </Text>
       <Spacer />
       <HStack alignItems="center" w="350px">
@@ -124,12 +144,30 @@ const Tag = (props) => {
           h="30px"
           fontSize="15px"
           onClick={() => {
-            if (localStorage.getItem("user"))
-              window.open(
-                `/testing/page/${1}`,
-                "_blank",
-                "location=yes,resizable=no,status=yes,height=5000,width=5000"
-              );
+            if (localStorage.getItem("user")){
+              localStorage.setItem('test',JSON.stringify(props.data))
+              const URL_2 = api + "Enroll_exam"
+              const data_2 = {
+                user_id : Number(JSON.parse(localStorage.getItem('user'))['id']),
+                exam_id : Number(props.data.id),
+              }
+              console.log(data_2)
+              axios.get(URL_2, {
+                params: {
+                  user_id : Number(JSON.parse(localStorage.getItem('user'))['id']),
+                  exam_id : Number(props.data.id),
+                }
+              }).then(
+                res => {
+                  console.log(res.data)
+                  window.open(
+                    `/testing/page/${1}`,
+                    "_blank",
+                    "location=yes,resizable=no,status=yes,height=5000,width=5000"
+                  );
+                }
+              )
+            }
             else navigate("/login");
           }}
         >

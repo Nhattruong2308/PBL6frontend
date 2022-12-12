@@ -1,53 +1,14 @@
 import { Box, Flex, SimpleGrid, Text, Tooltip } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Pagination from "react-js-pagination";
 import { useNavigate, useParams } from "react-router-dom";
 import Questions from "./Questions";
 import "../QuestionsTest/pagination.css";
+import axios from "axios";
+import { api } from "../../API/API";
 
 export default function QuestionsTest() {
-  const [answer, setAnswer] = useState([
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-  ]);
+  const [answer, setAnswer] = useState([]);
   const data = [
     ["1", "2", "3", "4", "5"],
     ["6", "7", "8", "9", "10"],
@@ -64,7 +25,32 @@ export default function QuestionsTest() {
   const params = useParams();
   const navigate = useNavigate();
   let CurrentPage = Number(params.id);
+  const [questions, setQuestions] = useState([]);
+  const [total, setTotal] = useState([]);
   console.log("page " + CurrentPage);
+  useEffect(()=>{
+    const URL = api + `questiosns_by_exam/${JSON.parse(localStorage.getItem('test'))['id']}/?page=${CurrentPage}`
+    axios.get(URL).then(
+      res => {
+        console.log(res.data)
+        setQuestions(res.data)
+        let arr = []
+        let arrzero = []
+        for (let i = 0; i < res.data.total; i++) {
+          // setTotal(prevState => (
+          //   [...prevState, i+1]
+          // ))
+          arr =  [...arr, i+1]
+          arrzero =  [...arrzero, "0"]
+        }
+        console.log(arr)
+        setTotal(arr)
+        if(answer.length === 0){
+          setAnswer(arrzero)
+        }
+      }
+    )
+  },[CurrentPage])
   const list = data[CurrentPage - 1].map((item) => (
     <Questions data={item} answer={answer} callbackAnswer={callbackAnswer} />
   ));
@@ -72,9 +58,9 @@ export default function QuestionsTest() {
     i = i + 1;
     let label = "";
     if (a === "0") label = label + "Chưa chọn đáp án";
-    else if (a === "1") label = label + "Đáp án chọn: A";
-    else if (a === "2") label = label + "Đáp án chọn: B";
-    else if (a === "3") label = label + "Đáp án chọn: C";
+    else if (a === "A") label = label + "Đáp án chọn: A";
+    else if (a === "B") label = label + "Đáp án chọn: B";
+    else if (a === "C") label = label + "Đáp án chọn: C";
     else label = label + "Đáp án chọn: D";
     return (
       <Tooltip key={i} label={label}>
@@ -103,6 +89,7 @@ export default function QuestionsTest() {
       </Tooltip>
     );
   });
+  console.log(answer)
 
   const getTestsData = (pageNumber = 1) => {
     if (CurrentPage !== pageNumber) {
@@ -128,19 +115,60 @@ export default function QuestionsTest() {
           scrollSnapType="x"
           scrollBehavior="smooth"
         >
-          {listAnswer}
+          {/* {listAnswer} */}
+          {
+            answer.map((a, i) => {
+              i = i + 1;
+              let label = "";
+              if (a === "0") label = label + "Chưa chọn đáp án";
+              else if (a === "A") label = label + "Đáp án chọn: A";
+              else if (a === "B") label = label + "Đáp án chọn: B";
+              else if (a === "C") label = label + "Đáp án chọn: C";
+              else label = label + "Đáp án chọn: D";
+              return (
+                <Tooltip key={i} label={label}>
+                  <Flex
+                    align="center"
+                    justifyContent="center"
+                    bg={a === "0" ? "#f5f5f5" : "blue.100"}
+                    minW="40px"
+                    h="40px"
+                    borderRadius={8}
+                    mx={1}
+                    cursor="pointer"
+                    mb={2}
+                    onClick={() => {
+                      let mod = i % 5;
+                      let page = (i - mod) / 5;
+          
+                      if (mod === 0) {
+                        if (CurrentPage !== page) navigate(`/testing/page/${page}`);
+                      } else if (CurrentPage !== page + 1)
+                        navigate(`/testing/page/${page + 1}`);
+                    }}
+                  >
+                    <Text color={a === "0" ? "#D9D9D9" : "blue.300"}>{"" + i}</Text>
+                  </Flex>
+                </Tooltip>
+              );
+            })
+          }
         </Flex>
       </Box>
       <Box py={5} w="100%">
         <SimpleGrid columns={1} spacing={"5"}>
-          {list}
+          {questions.data?.map((item,i) => 
+             (
+              <Questions data={item} index ={(CurrentPage-1)*5 + i} total={total} answer={answer} callbackAnswer={callbackAnswer} />
+            ))
+          }
         </SimpleGrid>
       </Box>
       <Box py={3} color="white">
         <Pagination
           hideDisabled
           activePage={CurrentPage}
-          totalItemsCount={40}
+          totalItemsCount={questions.total}
           itemsCountPerPage={5}
           itemClass="page-item"
           linkClass="page-link"

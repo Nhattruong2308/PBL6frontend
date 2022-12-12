@@ -4,6 +4,8 @@ import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import Tag from "./Tag";
 import Pagination from "react-js-pagination";
 import "../ListTag/pagtest.css";
+import { api } from "../../API/API";
+import axios from "axios";
 
 const ListTag = () => {
   const params = useParams();
@@ -12,6 +14,22 @@ const ListTag = () => {
   let CurrentPage = 0;
   if (params.id) CurrentPage = Number(params.id);
   else CurrentPage = 1;
+  const [exam, setExam] = useState([]);
+  useEffect(() => {
+    const URL =
+      api + `exams?page=${CurrentPage}`;
+    axios.get(URL).then((res) => {
+      console.log(res.data);
+      setExam(res.data);
+    });
+  }, []);
+  console.log(exam);
+
+  // const getTestsData = (pageNumber = 1) => {
+  //   if (CurrentPage !== pageNumber) {
+  //     setCurrentPage(pageNumber);
+  //   }
+  // };
   const data = [
     ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
     ["13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24"],
@@ -22,6 +40,9 @@ const ListTag = () => {
     ["73", "74", "75", "76", "77", "78", "79", "80", "81", "82", "83", "84"],
     ["85", "86", "87", "88", "89", "90"],
   ];
+  useEffect(()=>{
+
+  },)
   const list = data[CurrentPage - 1].map((item) => (
     <Tag data={item} left={context[0]} />
   ));
@@ -40,6 +61,7 @@ const ListTag = () => {
       setSizeText("20px");
     }
   }, [context[0]]);
+  console.log(exam)
   return (
     <Box>
       <Heading fontSize={sizeText} color="#55423D">
@@ -60,14 +82,18 @@ const ListTag = () => {
       <Center mt="40px">
         <Box>
           <SimpleGrid columns={3} spacing={10}>
-            {list}
+            {exam.data?.map((item) => (
+              <Tag data={item} left={context[0]} />
+            ))}
           </SimpleGrid>
+          {exam.total <= 9 ?
+          "":  
           <Center color={"white"} mt={5}>
             <Pagination
               hideDisabled
               activePage={CurrentPage}
-              totalItemsCount={90}
-              itemsCountPerPage={12}
+              totalItemsCount={exam.total}
+              itemsCountPerPage={9}
               itemClass="page-item"
               linkClass="page-link"
               itemClassNext="next-item"
@@ -81,6 +107,7 @@ const ListTag = () => {
               onChange={(pageNumber) => getTestsData(pageNumber)}
             />
           </Center>
+          }
         </Box>
       </Center>
     </Box>
