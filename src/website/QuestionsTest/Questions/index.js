@@ -9,17 +9,20 @@ import {
   Text,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
+import { api_image } from "../../../API/API";
 
 export default function Questions(props) {
   const handleClickAnswer = (e) => {
     const answerUpdate = props.answer.map((a, i) => {
-      if (i === Number(props.data) - 1) {
+      if (i === Number(props.total[props.index]) - 1) {
         return e.target.value;
       } else {
         return a;
       }
     });
+    console.log(answerUpdate)
     props.callbackAnswer(answerUpdate);
+    localStorage.setItem('answer', JSON.stringify(answerUpdate))
   };
   useEffect(() => {}, [props.answer]);
   return (
@@ -27,7 +30,7 @@ export default function Questions(props) {
       w="100%"
       boxShadow="2xl"
       bg="#FEF6E4"
-      key={props.data}
+      key={props.data.id}
       p={3}
       borderRadius={8}
     >
@@ -39,28 +42,26 @@ export default function Questions(props) {
           borderRadius="50%"
           py={2}
           px={4}
-          bg={Number(props.data) % 2 === 0 ? "#08D9D6" : "#FF2E63"}
+          bg={Number(props.total[props.index]) % 2 === 0 ? "#08D9D6" : "#FF2E63"}
         >
-          {props.data}
+          {props.total[props.index]}
         </Text>
       </Center>
       <Center flex={4}>
         <Image
-          src={require("../../../imgs/dog.png")}
-          w="85%"
-          h="30vh"
-          objectFit="cover"
+          src={api_image+props.data.image}
+          w="70%"
           borderRadius={8}
         />
       </Center>
       <Center flex={5}>
         <RadioGroup
           w="80%"
-          name={props.data}
+          name={String(props.total[props.index])}
           defaultValue={
-            props.answer[Number(props.data) - 1] === "0"
+            props.answer[Number(props.total[props.index]) - 1] === "0"
               ? ""
-              : props.answer[Number(props.data) - 1]
+              : props.answer[Number(props.total[props.index]) - 1]
           }
         >
           <Stack w="100%" spacing={3}>
@@ -69,7 +70,7 @@ export default function Questions(props) {
               justifyItems="center"
               alignItems="center"
               bg={
-                props.answer[Number(props.data) - 1] === "1"
+                props.answer[Number(props.total[props.index]) - 1] === "A"
                   ? "blue.300"
                   : "#D9D9D9"
               }
@@ -82,7 +83,7 @@ export default function Questions(props) {
                 align="center"
                 justifyContent="center"
                 bg={
-                  props.answer[Number(props.data) - 1] === "1"
+                  props.answer[Number(props.total[props.index]) - 1] === "A"
                     ? "blue.100"
                     : "#f5f5f5"
                 }
@@ -93,7 +94,7 @@ export default function Questions(props) {
                 <Radio
                   justifyContent="center"
                   w="100%"
-                  value="1"
+                  value="A"
                   colorScheme="cyan"
                   border="4px"
                   borderColor="#D9D9D9"
@@ -107,14 +108,15 @@ export default function Questions(props) {
                 px={2}
                 fontSize="17px"
                 bg={
-                  props.answer[Number(props.data) - 1] === "1"
+                  props.answer[Number(props.total[props.index]) - 1] === "A"
                     ? "blue.50"
                     : "white"
                 }
                 minH="50px"
                 borderRightRadius={8}
+                textTransform="lowercase"
               >
-                The dog is running through the glass
+                {props.data.A}
               </Flex>
             </Flex>
 
@@ -123,7 +125,7 @@ export default function Questions(props) {
               justifyItems="center"
               alignItems="center"
               bg={
-                props.answer[Number(props.data) - 1] === "2"
+                props.answer[Number(props.total[props.index]) - 1] === "B"
                   ? "blue.300"
                   : "#D9D9D9"
               }
@@ -136,7 +138,7 @@ export default function Questions(props) {
                 align="center"
                 justifyContent="center"
                 bg={
-                  props.answer[Number(props.data) - 1] === "2"
+                  props.answer[Number(props.total[props.index]) - 1] === "B"
                     ? "blue.100"
                     : "#f5f5f5"
                 }
@@ -147,7 +149,7 @@ export default function Questions(props) {
                 <Radio
                   justifyContent="center"
                   w="100%"
-                  value="2"
+                  value="B"
                   colorScheme="cyan"
                   border="4px"
                   borderColor="#D9D9D9"
@@ -161,14 +163,15 @@ export default function Questions(props) {
                 px={2}
                 fontSize="17px"
                 bg={
-                  props.answer[Number(props.data) - 1] === "2"
+                  props.answer[Number(props.total[props.index]) - 1] === "B"
                     ? "blue.50"
                     : "white"
                 }
                 minH="50px"
                 borderRightRadius={8}
+                textTransform="lowercase"
               >
-                The dog is running through the glass
+                {props.data.B}
               </Flex>
             </Flex>
 
@@ -177,7 +180,7 @@ export default function Questions(props) {
               justifyItems="center"
               alignItems="center"
               bg={
-                props.answer[Number(props.data) - 1] === "3"
+                props.answer[Number(props.total[props.index]) - 1] === "C"
                   ? "blue.300"
                   : "#D9D9D9"
               }
@@ -190,7 +193,7 @@ export default function Questions(props) {
                 align="center"
                 justifyContent="center"
                 bg={
-                  props.answer[Number(props.data) - 1] === "3"
+                  props.answer[Number(props.total[props.index]) - 1] === "C"
                     ? "blue.100"
                     : "#f5f5f5"
                 }
@@ -201,7 +204,7 @@ export default function Questions(props) {
                 <Radio
                   justifyContent="center"
                   w="100%"
-                  value="3"
+                  value="C"
                   colorScheme="cyan"
                   border="4px"
                   borderColor="#D9D9D9"
@@ -215,14 +218,15 @@ export default function Questions(props) {
                 px={2}
                 fontSize="17px"
                 bg={
-                  props.answer[Number(props.data) - 1] === "3"
+                  props.answer[Number(props.total[props.index]) - 1] === "C"
                     ? "blue.50"
                     : "white"
                 }
                 minH="50px"
                 borderRightRadius={8}
+                textTransform="lowercase"
               >
-                The dog is running through the glass
+                {props.data.C}
               </Flex>
             </Flex>
 
@@ -231,7 +235,7 @@ export default function Questions(props) {
               justifyItems="center"
               alignItems="center"
               bg={
-                props.answer[Number(props.data) - 1] === "4"
+                props.answer[Number(props.total[props.index]) - 1] === "D"
                   ? "blue.300"
                   : "#D9D9D9"
               }
@@ -244,7 +248,7 @@ export default function Questions(props) {
                 align="center"
                 justifyContent="center"
                 bg={
-                  props.answer[Number(props.data) - 1] === "4"
+                  props.answer[Number(props.total[props.index]) - 1] === "D"
                     ? "blue.100"
                     : "#f5f5f5"
                 }
@@ -255,7 +259,7 @@ export default function Questions(props) {
                 <Radio
                   justifyContent="center"
                   w="100%"
-                  value="4"
+                  value="D"
                   colorScheme="cyan"
                   border="4px"
                   borderColor="#D9D9D9"
@@ -269,14 +273,15 @@ export default function Questions(props) {
                 px={2}
                 fontSize="17px"
                 bg={
-                  props.answer[Number(props.data) - 1] === "4"
+                  props.answer[Number(props.total[props.index]) - 1] === "D"
                     ? "blue.50"
                     : "white"
                 }
                 minH="50px"
                 borderRightRadius={8}
+                textTransform="lowercase"
               >
-                The dog is running through the glass
+                {props.data.D}
               </Flex>
             </Flex>
           </Stack>

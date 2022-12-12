@@ -121,7 +121,7 @@ export default function ImgPredict() {
                 src={imgPre}
                 w="100%"
                 h={hImg}
-                objectFit={"cover"}
+                objectFit={img === "" ? "cover" : "contain"}
                 borderRadius={10}
                 transition="all 0.5s"
                 alt="img-predict"
@@ -139,7 +139,7 @@ export default function ImgPredict() {
                 borderRadius={5}
                 focusBorderColor="#FEF6E4"
                 w="100%"
-                value={result}
+                value={result.answer}
                 type="text"
                 onChange={(e) => setResult(e.target.value)}
                 boxShadow="1px 2px 3px gray"

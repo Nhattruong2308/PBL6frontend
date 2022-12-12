@@ -1,6 +1,8 @@
 import { Box, Button, Center, Flex, Image, Text } from "@chakra-ui/react";
+import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import { Outlet } from "react-router-dom";
+import { api } from "../../API/API";
 
 const formatTime = (time) => {
   let hours = Math.floor(time / 3600);
@@ -18,10 +20,32 @@ export default function Testing() {
   }, []);
 
   const handleTabClose = (event) => {
-    window.close();
+    const URL = api + "submit_exam"
+    const data = {
+      exam_id: JSON.parse(localStorage.getItem('test'))['id'],
+      user_id: JSON.parse(localStorage.getItem('user'))['id'],
+      answer: JSON.parse(localStorage.getItem('answer')),
+    }
+    console.log(data)
+    axios.get(URL,
+      {
+        params:{
+          exam_id: JSON.parse(localStorage.getItem('test'))['id'],
+          user_id: JSON.parse(localStorage.getItem('user'))['id'],
+          answer: JSON.parse(localStorage.getItem('answer')),
+        }
+      }
+      ).then(
+      res => {
+        console.log(res.data)
+        localStorage.removeItem('test')
+        localStorage.removeItem('answer')
+        window.close();
+      }
+    )
   };
-
-  const [countdown, setCountdown] = useState(300);
+  const duration = Number(JSON.parse(localStorage.getItem('test'))['duration'])
+  const [countdown, setCountdown] = useState(duration*60);
   const timerId = useRef();
   useEffect(() => {
     timerId.current = setInterval(() => {
@@ -32,6 +56,28 @@ export default function Testing() {
   useEffect(() => {
     if (countdown < 0) {
       clearInterval(timerId.current);
+      const URL = api + "submit_exam"
+      const data = {
+        exam_id: JSON.parse(localStorage.getItem('test'))['id'],
+        user_id: JSON.parse(localStorage.getItem('user'))['id'],
+        answer: JSON.parse(localStorage.getItem('answer')),
+      }
+      axios.get(URL, 
+        {
+          params:{
+            exam_id: JSON.parse(localStorage.getItem('test'))['id'],
+            user_id: JSON.parse(localStorage.getItem('user'))['id'],
+            answer: JSON.parse(localStorage.getItem('answer')),
+          }
+        }
+        ).then(
+        res => {
+          console.log(res.data)
+          localStorage.removeItem('test')
+          localStorage.removeItem('answer')
+          window.close();
+        }
+      )
     }
   }, [countdown]);
   return (
@@ -116,7 +162,7 @@ export default function Testing() {
           fontWeight="bold"
           textTransform="uppercase"
         >
-          Kiểm tra Ielts 2022
+          {JSON.parse(localStorage.getItem('test'))['title']}
         </Box>
         <Box w="100%" bg="#F3D2C1" px={8} py={3}>
           <Outlet />
