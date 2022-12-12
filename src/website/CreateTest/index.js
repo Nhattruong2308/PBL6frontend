@@ -20,30 +20,28 @@ import { api } from "../../API/API";
 
 export default function CreateTest() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [title,setTitle] = useState("")
-  const [duration,setDuration] = useState("")
-  const [total,setTotal] = useState("")
-  const handlesubmit = (e)=> {
-    e.preventDefault()
-    const URL = api + "addexam"
+  const [title, setTitle] = useState("");
+  const [duration, setDuration] = useState("");
+  const [total, setTotal] = useState("");
+  const handlesubmit = (e) => {
+    e.preventDefault();
+    const URL = api + "addexam";
     const data = {
       title: title,
       duration: duration,
       total_question: total,
-      user_id: JSON.parse(localStorage.getItem('user'))['id']
-    }
-    axios.post(URL,data,
-      {
-        headers:{
-          'Content-Type': 'application/json',
-        }
-      }
-      ).then(
-        res => {
-          console.log(res.data)
-        }
-    )
-  }
+      user_id: JSON.parse(localStorage.getItem("user"))["id"],
+    };
+    axios
+      .post(URL, data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then((res) => {
+        console.log(res.data);
+      });
+  };
   return (
     <>
       <Button
@@ -64,7 +62,7 @@ export default function CreateTest() {
         preserveScrollBarGap={true}
       >
         <ModalOverlay />
-        <ModalContent bg="#252A34" color="white" alignSelf={"center"}>
+        <ModalContent bg="#55423d" color="#FEF6E4" alignSelf={"center"}>
           <ModalHeader>Thêm bài test</ModalHeader>
           <ModalCloseButton />
           <Divider />
@@ -83,7 +81,7 @@ export default function CreateTest() {
                       type="text"
                       placeholder="Nhập tên bài test"
                       value={title}
-                      onChange={(e)=> setTitle(e.target.value)}
+                      onChange={(e) => setTitle(e.target.value)}
                     />
                   </Box>
                 </Center>
@@ -100,7 +98,7 @@ export default function CreateTest() {
                       type="text"
                       placeholder="Nhập thời lượng bài test"
                       value={duration}
-                      onChange={(e)=> setDuration(e.target.value)}
+                      onChange={(e) => setDuration(e.target.value)}
                     />
                   </Box>
                 </Center>
@@ -117,7 +115,7 @@ export default function CreateTest() {
                       type="text"
                       placeholder="Nhập số lượng câu"
                       value={total}
-                      onChange={(e)=> setTotal(e.target.value)}
+                      onChange={(e) => setTotal(e.target.value)}
                     />
                   </Box>
                 </Center>

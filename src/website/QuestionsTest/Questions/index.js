@@ -26,7 +26,7 @@ export default function Questions(props) {
     <Flex
       w="100%"
       boxShadow="2xl"
-      bg="white"
+      bg="#FEF6E4"
       key={props.data}
       p={3}
       borderRadius={8}

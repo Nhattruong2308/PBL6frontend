@@ -5,6 +5,7 @@ import {
   Divider,
   Flex,
   Image,
+  Input,
   Text,
 } from "@chakra-ui/react";
 import React, { useCallback, useEffect, useState } from "react";
@@ -79,14 +80,7 @@ export default function ImgPredict() {
   };
   return (
     <Center>
-      <Box bg={"rgba(37,42,52,0.5)"} w="85%" color="white">
-        <Flex w="100%" alignItems="center" p="10px" h="50px">
-          <HiWrenchScrewdriver fontSize="20px" />
-          <Text fontWeight="bold" ml="10px">
-            Đoán ảnh
-          </Text>
-        </Flex>
-        <Divider />
+      <Box w="90%" color="#001858">
         <Flex
           w="100%"
           alignItems={"center"}
@@ -94,45 +88,7 @@ export default function ImgPredict() {
           transition="all 0.5s"
           py={3}
         >
-          <Box flex={8} px={10}>
-            <Center w="100%">
-              <Image
-                src={imgPre}
-                w="100%"
-                h={hImg}
-                objectFit={"cover"}
-                borderRadius={10}
-                transition="all 0.5s"
-                alt="img-predict"
-              />
-            </Center>
-            <Center mt={4} w="100%">
-              <Flex alignItems={"center"} w="100%">
-                <Box flex={1.5}>
-                  <Text fontSize="18px">Kết quả:</Text>
-                </Box>
-
-                <Box
-                  flex={8.5}
-                  bg="white"
-                  border={"2px"}
-                  borderRadius={5}
-                  borderColor="#08D9D6"
-                  px={3}
-                  py={1}
-                  maxH="40px"
-                  overflow={"scroll"}
-                  // overflowX="hidden"
-                  // overflowY="hidden"
-                >
-                  <Text color="black" fontWeight="bold" fontSize="15px">
-                    {result}
-                  </Text>
-                </Box>
-              </Flex>
-            </Center>
-          </Box>
-          <Box flex={2} h="100%" py={10}>
+          <Box flex={7.5}>
             <input
               type={"file"}
               id="file"
@@ -140,28 +96,72 @@ export default function ImgPredict() {
               style={{ display: "none" }}
               onChange={handlecreateBase64}
             />
-            <Button
+            <Box
               as="label"
-              cursor={"pointer"}
               htmlFor="file"
-              bg="yellow.500"
-              leftIcon={<MdFileUpload />}
-              size="sm"
-              _hover={{ bg: "yellow.400" }}
-              mb={5}
+              cursor="pointer"
+              w="73%"
+              float="right"
             >
-              Tải ảnh
-            </Button>
-            <Button
-              cursor={"pointer"}
-              bg="red.500"
-              size="sm"
-              _hover={{ bg: "red.400" }}
-              mb={5}
-              onClick={PredictImg}
-            >
-              Dự đoán
-            </Button>
+              {img === "" ? (
+                <Text
+                  color="#001858"
+                  fontWeight={"bold"}
+                  pos="absolute"
+                  mt={context[0] === "-240px" ? "250px" : "210px"}
+                  ml={context[0] === "-240px" ? "260px" : "220px"}
+                >
+                  {" "}
+                  Upload ảnh tại đây
+                </Text>
+              ) : null}
+
+              <Image
+                zIndex={10}
+                src={imgPre}
+                w="100%"
+                h={hImg}
+                objectFit={"cover"}
+                borderRadius={10}
+                transition="all 0.5s"
+                alt="img-predict"
+                border={img === "" ? "2px dotted rgb(85,66,61)" : ""}
+              />
+            </Box>
+            <Box mt={4} w="73%" float="right">
+              <Text fontSize="18px" fontWeight="bold">
+                Kết quả:
+              </Text>
+
+              <Input
+                bg="#FEF6E4"
+                border="none"
+                borderRadius={5}
+                focusBorderColor="#FEF6E4"
+                w="100%"
+                value={result}
+                type="text"
+                onChange={(e) => setResult(e.target.value)}
+                boxShadow="1px 2px 3px gray"
+              />
+            </Box>
+          </Box>
+          <Box flex={2.5} h="100%" py={20}>
+            <Center>
+              <Image
+                src={require("../../imgs/btn_predict.png")}
+                borderRadius={"50%"}
+                onClick={PredictImg}
+                w="40%"
+                h="40%"
+                cursor="pointer"
+                _hover={{ opacity: 0.8, transform: "scale(0.9)" }}
+              />
+            </Center>
+            <Text fontWeight={"bold"} textAlign="center">
+              Click tại đây để
+              <br /> hiển thị kết quả
+            </Text>
           </Box>
         </Flex>
       </Box>

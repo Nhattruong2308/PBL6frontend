@@ -55,7 +55,7 @@ export default function CreateQuestion(props) {
       };
     });
   };
-  const predictImg = ()=> {
+  const predictImg = () => {
     const formdata = new FormData();
     formdata.append("file", img);
 
@@ -83,9 +83,9 @@ export default function CreateQuestion(props) {
       .catch((error) => {
         console.log(error);
       });
-  }
+  };
   const onSave = () => {
-    const URL = api + "addquestion"
+    const URL = api + "addquestion";
     const formdata = new FormData();
     formdata.append("image", img);
     formdata.append("title", "Predict this image");
@@ -99,15 +99,15 @@ export default function CreateQuestion(props) {
       .post(URL, formdata, {
         headers: {
           "Content-Type": "multipart/form-data",
-        }
+        },
       })
       .then((res) => {
-        console.log(res.data)
+        console.log(res.data);
       })
       .catch((error) => {
         console.log(error);
       });
-  }
+  };
   return (
     <>
       <Icon
@@ -126,7 +126,7 @@ export default function CreateQuestion(props) {
         size="3xl"
       >
         <ModalOverlay />
-        <ModalContent bg="#252A34" color="white" alignSelf={"center"}>
+        <ModalContent bg="#55423d" color="#FEF6E4" alignSelf={"center"}>
           <ModalHeader>Thêm question</ModalHeader>
           <ModalCloseButton />
           <Divider />
@@ -157,7 +157,7 @@ export default function CreateQuestion(props) {
                         borderColor={"#08D9D6"}
                         border="2px"
                         value={answer}
-                        onChange={(e)=>setAnswer(e.target.value)}
+                        onChange={(e) => setAnswer(e.target.value)}
                       />
                     </Flex>
                   </Box>
@@ -216,7 +216,7 @@ export default function CreateQuestion(props) {
                             borderColor={"#FF2E63"}
                             border="2px"
                             value={A}
-                            onChange={(e)=>setA(e.target.value)}
+                            onChange={(e) => setA(e.target.value)}
                           />
                         </Box>
                         <Box>
@@ -232,7 +232,7 @@ export default function CreateQuestion(props) {
                             borderColor={"#FF2E63"}
                             border="2px"
                             value={B}
-                            onChange={(e)=>setB(e.target.value)}
+                            onChange={(e) => setB(e.target.value)}
                           />
                         </Box>
                       </Flex>
@@ -251,7 +251,7 @@ export default function CreateQuestion(props) {
                             borderColor={"#FF2E63"}
                             border="2px"
                             value={C}
-                            onChange={(e)=>setC(e.target.value)}
+                            onChange={(e) => setC(e.target.value)}
                           />
                         </Box>
                         <Box>
@@ -267,7 +267,7 @@ export default function CreateQuestion(props) {
                             borderColor={"#FF2E63"}
                             border="2px"
                             value={D}
-                            onChange={(e)=>setD(e.target.value)}
+                            onChange={(e) => setD(e.target.value)}
                           />
                         </Box>
                       </Flex>

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import Tag from "./Tag";
 import Pagination from "react-js-pagination";
-import "../ListTag/pagination.css";
+import "../ListTag/pagtest.css";
 
 const ListTag = () => {
   const params = useParams();
@@ -28,7 +28,7 @@ const ListTag = () => {
 
   const getTestsData = (pageNumber = 1) => {
     if (CurrentPage !== pageNumber) {
-      navigate(`/page/${pageNumber}`);
+      navigate(`/tests/page/${pageNumber}`);
     }
   };
 
@@ -42,16 +42,24 @@ const ListTag = () => {
   }, [context[0]]);
   return (
     <Box>
-      <Heading fontSize={sizeText} color="white">
-        WELCOME TO <span style={{ color: "#08D9D6" }}>ENGLISH </span>
-        <span style={{ color: "#FF2E63" }}>ACADEMY</span>!
+      <Heading fontSize={sizeText} color="#55423D">
+        WELCOME TO <span style={{ color: "#8BD3DD" }}>ENGLISH </span>
+        <span style={{ color: "#F582AE" }}>ACADEMY</span>!
       </Heading>
-      <Heading fontSize={sizeText} color="white" ml="75%" mb="40px">
-        XIN CHÀO JOHN WICK!
-      </Heading>
+      {localStorage.getItem("user") ? (
+        <Heading
+          fontSize={sizeText}
+          color="#55423D"
+          ml="75%"
+          mb="40px"
+          textTransform="uppercase"
+        >
+          XIN CHÀO {JSON.parse(localStorage.getItem("user")).name}!
+        </Heading>
+      ) : null}
       <Center mt="40px">
         <Box>
-          <SimpleGrid columns={3} spacing={"5"}>
+          <SimpleGrid columns={3} spacing={10}>
             {list}
           </SimpleGrid>
           <Center color={"white"} mt={5}>

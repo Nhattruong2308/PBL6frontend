@@ -17,16 +17,13 @@ import EditTest from "../../website/EditTest";
 export default function Test2(props) {
   const [style, setStyle] = useState({ opacity: 0 });
   const [style2, setStyle2] = useState({ opacity: 1 });
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const onDelete = () => {
-    const URL = api + `delete_exam/${props.data.id}`
-    axios.delete(URL,
-      ).then(
-        res => {
-          console.log(res.data)
-        }
-    )
-  }
+    const URL = api + `delete_exam/${props.data.id}`;
+    axios.delete(URL).then((res) => {
+      console.log(res.data);
+    });
+  };
   return (
     <Box
       key={props.data.id}
@@ -40,15 +37,16 @@ export default function Test2(props) {
       }}
     >
       <Flex style={style} pos="absolute" mt="100px" ml="140px" zIndex={10}>
-          <IconButton
-            bg="#08D9D6"
-            icon={<AiFillEye />}
-            colorScheme="blue"
-            mr={2}
-            onClick={()=>{
-              navigate(`/test-info/${props.data.id}`)
-            }}
-          />
+        <IconButton
+          bg="#08D9D6"
+          icon={<AiFillEye />}
+          colorScheme="blue"
+          mr={2}
+          size="sm"
+          onClick={() => {
+            navigate(`/test-info/${props.data.id}`);
+          }}
+        />
         <EditTest data={props.data} />
         <IconButton
           bg="#FF2E63"
@@ -56,12 +54,13 @@ export default function Test2(props) {
           colorScheme="red"
           mr={2}
           onClick={onDelete}
+          size="sm"
         />
       </Flex>
       <Stack
         cursor="pointer"
         borderRadius={8}
-        bg="white"
+        bg="#FEF6E4"
         h="250px"
         w="450px"
         p={2}
@@ -74,8 +73,11 @@ export default function Test2(props) {
           </Text>
         </Flex>
 
-        <Text fontSize="25px"> {props.data.title}</Text>
-        <Text color="gray" fontSize="20px">
+        <Text fontSize="25px" color="#001858" fontWeight="bold">
+          {" "}
+          {props.data.title}
+        </Text>
+        <Text color="#55423D" fontSize="20px">
           Số câu: {props.data.total_question}
         </Text>
 
@@ -87,8 +89,8 @@ export default function Test2(props) {
             h="40px"
             borderRadius={"50%"}
           />
-          <Text ml="5px" fontSize="25px">
-            {JSON.parse(localStorage.getItem('user'))['name']}
+          <Text ml="5px" fontSize="25px" color="#001858">
+            {JSON.parse(localStorage.getItem("user"))["name"]}
           </Text>
         </Flex>
       </Stack>

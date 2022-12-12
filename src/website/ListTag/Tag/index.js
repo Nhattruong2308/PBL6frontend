@@ -8,31 +8,36 @@ import {
   Text,
 } from "@chakra-ui/react";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const Tag = (props) => {
+  const navigate = useNavigate();
   if (props.left === "0") {
     return (
       <Stack
         key={props.data}
-        bg="rgba(255,255,255,0.95)"
+        bg="#FEF6E4"
         h="165px"
         w="300px"
         p="7px"
         borderRadius={"7px"}
         cursor="pointer"
-        _hover={{ bg: "white", transform: "scale(1.07) rotate(3deg)" }}
+        _hover={{
+          bg: "rgb(243,210,193,0.8)",
+          transform: "scale(1.07) rotate(3deg)",
+        }}
         transition="all 0.5s"
       >
         <Flex alignItems="center" mb="12px">
           <Image src={require("../../../imgs/logo.png")} w="30px" h="30px" />
-          <Text ml="5px" color={"#08D9D6"} fontSize="16px">
-            ENGLISH <span style={{ color: "#FF2E63" }}>ACADEMY</span>
+          <Text ml="5px" color={"#8BD3DD"} fontSize="16px">
+            ENGLISH <span style={{ color: "#F582AE" }}>ACADEMY</span>
           </Text>
         </Flex>
-        <Text color={"black"} fontWeight="bold" fontSize="16px">
+        <Text color={"#001858"} fontWeight="bold" fontSize="16px">
           Unit {props.data}
         </Text>
-        <Text color={"gray"} fontSize="14px">
+        <Text color={"#55423D"} fontSize="14px">
           Từ vựng: 18
         </Text>
         <Spacer />
@@ -43,7 +48,7 @@ const Tag = (props) => {
             h="25px"
             borderRadius="50%"
           />
-          <Text fontSize={"14px"} color={"black"}>
+          <Text fontSize={"14px"} color={"#001858"}>
             John Wick
           </Text>
           <Spacer />
@@ -56,11 +61,13 @@ const Tag = (props) => {
             h="24px"
             fontSize="12px"
             onClick={() => {
-              window.open(
-                `/testing/page/${1}`,
-                "_blank",
-                "location=yes,resizable=no,status=yes,height=5000,width=5000"
-              );
+              if (localStorage.getItem("user"))
+                window.open(
+                  `/testing/page/${1}`,
+                  "_blank",
+                  "location=yes,resizable=no,status=yes,height=5000,width=5000"
+                );
+              else navigate("/login");
             }}
           >
             BẮT ĐẦU
@@ -72,25 +79,28 @@ const Tag = (props) => {
   return (
     <Stack
       key={props.data}
-      bg="rgba(255,255,255,0.95)"
+      bg="#FEF6E4"
       h="200px"
       w="370px"
       p="10px"
       borderRadius={"7px"}
       cursor="pointer"
-      _hover={{ bg: "white", transform: "scale(1.07) rotate(3deg)" }}
+      _hover={{
+        bg: "rgb(243,210,193,0.8)",
+        transform: "scale(1.07) rotate(3deg)",
+      }}
       transition="all 0.5s"
     >
       <Flex alignItems="center" mb="15px">
         <Image src={require("../../../imgs/logo.png")} w="35px" h="35px" />
-        <Text ml="5px" color={"#08D9D6"}>
-          ENGLISH <span style={{ color: "#FF2E63" }}>ACADEMY</span>
+        <Text ml="5px" color={"#8BD3DD"}>
+          ENGLISH <span style={{ color: "#F582AE" }}>ACADEMY</span>
         </Text>
       </Flex>
-      <Text color={"black"} fontWeight="bold">
+      <Text color={"#001858"} fontWeight="bold">
         Unit {props.data}
       </Text>
-      <Text color={"gray"} fontSize="17px">
+      <Text color={"#55423D"} fontSize="17px">
         Từ vựng: 18
       </Text>
       <Spacer />
@@ -101,7 +111,7 @@ const Tag = (props) => {
           h="35px"
           borderRadius="50%"
         />
-        <Text fontSize={"17px"} color={"black"}>
+        <Text fontSize={"17px"} color={"#001858"}>
           John Wick
         </Text>
         <Spacer />
@@ -114,11 +124,13 @@ const Tag = (props) => {
           h="30px"
           fontSize="15px"
           onClick={() => {
-            window.open(
-              `/testing/page/${1}`,
-              "_blank",
-              "location=yes,resizable=no,status=no,titlebar=no,height=5000,width=5000"
-            );
+            if (localStorage.getItem("user"))
+              window.open(
+                `/testing/page/${1}`,
+                "_blank",
+                "location=yes,resizable=no,status=yes,height=5000,width=5000"
+              );
+            else navigate("/login");
           }}
         >
           BẮT ĐẦU

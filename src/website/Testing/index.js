@@ -1,7 +1,17 @@
 import { Box, Button, Center, Flex, Image, Text } from "@chakra-ui/react";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Outlet } from "react-router-dom";
 
+const formatTime = (time) => {
+  let hours = Math.floor(time / 3600);
+  let minutes = Math.floor(time / 60 - hours * 60);
+  let seconds = Math.floor(time - minutes * 60 - hours * 3600);
+
+  if (hours < 10) hours = "0" + hours;
+  if (minutes < 10) minutes = "0" + minutes;
+  if (seconds < 10) seconds = "0" + seconds;
+  return [hours, minutes, seconds];
+};
 export default function Testing() {
   useEffect(() => {
     document.title = "Testing - English Academy";
@@ -11,6 +21,19 @@ export default function Testing() {
     window.close();
   };
 
+  const [countdown, setCountdown] = useState(300);
+  const timerId = useRef();
+  useEffect(() => {
+    timerId.current = setInterval(() => {
+      setCountdown((prev) => prev - 1);
+    }, 1000);
+    return () => clearInterval(timerId.current);
+  }, []);
+  useEffect(() => {
+    if (countdown < 0) {
+      clearInterval(timerId.current);
+    }
+  }, [countdown]);
   return (
     <Flex
       className="background"
@@ -19,10 +42,10 @@ export default function Testing() {
       overflow="hidden"
       py={5}
     >
-      <Box flex={1.2}>
+      <Box w="13%">
         <Box pos="fixed" top={5} left={3}>
           <Box w="80%">
-            <Center w="100%" bg="rgba(37,42,52)" py={3}>
+            <Center w="100%" bg="#55423D" py={3}>
               <Box w="60%">
                 <Image
                   src={require("../../imgs/img1.png")}
@@ -39,8 +62,8 @@ export default function Testing() {
             </Center>
             <Box
               w="100%"
-              bg="white"
-              p={2}
+              bg="#FEF6E4"
+              p={1.2}
               textAlign="center"
               color="black"
               fontWeight={"bold"}
@@ -48,7 +71,7 @@ export default function Testing() {
               <Text>Thời gian:</Text>
               <Flex justifyContent="center" w="100%">
                 <Text bg="#FF2E63" color="white" mr={1} px={1} borderRadius={5}>
-                  00
+                  {formatTime(countdown)[0]}
                 </Text>{" "}
                 :{" "}
                 <Text
@@ -59,15 +82,16 @@ export default function Testing() {
                   px={1}
                   borderRadius={5}
                 >
-                  00
+                  {formatTime(countdown)[1]}
                 </Text>{" "}
                 :{" "}
                 <Text bg="#FF2E63" color="white" ml={1} px={1} borderRadius={5}>
-                  05
+                  {formatTime(countdown)[2]}
                 </Text>
               </Flex>
               <Button
                 mt={3}
+                mb={2}
                 size="sm"
                 color="white"
                 bg="#08D9D6"
@@ -81,20 +105,20 @@ export default function Testing() {
         </Box>
       </Box>
 
-      <Box flex={8.8} pr={10}>
+      <Box w="87%" float={"right"} pr={10}>
         <Box
           w="100%"
           p={1}
           fontSize={"30px"}
-          color="white"
-          bg="rgba(37,42,52)"
+          color="#FEF6E4"
+          bg="#55423D"
           textAlign={"center"}
           fontWeight="bold"
           textTransform="uppercase"
         >
           Kiểm tra Ielts 2022
         </Box>
-        <Box w="100%" bg="white" px={8} py={3}>
+        <Box w="100%" bg="#F3D2C1" px={8} py={3}>
           <Outlet />
         </Box>
       </Box>

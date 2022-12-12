@@ -1,4 +1,4 @@
-.page-item {
+.page-item-ti {
   list-style: none;
   border: 1px solid grey;
   display: flex;
@@ -9,46 +9,49 @@
   margin: 0px 3px;
   cursor: pointer;
   border-radius: 8%;
-  background: white;
+  background: #fef6e4;
 }
-.page-link {
+.page-link-ti {
   font-size: 20px;
 }
 
-.first-link {
+.first-link-ti {
   font-size: 25px;
   font-weight: bold;
   margin-bottom: 3px;
 }
-.last-link {
+.last-link-ti {
   font-size: 25px;
   font-weight: bold;
   margin-bottom: 3px;
 }
-.next-item {
+.next-item-ti {
   display: none;
 }
-.prev-item {
+.prev-item-ti {
   display: none;
 }
-.container {
+.container-ti {
   display: flex;
   justify-content: center;
 }
 
-.page-item:hover {
+.page-item-ti:hover {
   background: #08d9d6;
+  color: #fef6e4;
 }
 
-.paginationActive {
+.paginationActive-ti {
   background: #ff2e63;
+  color: #fef6e4;
   user-select: none;
   cursor: default;
 }
-.paginationActive:hover {
+.paginationActive-ti:hover {
   background: #ff2e63;
+  color: #fef6e4;
 }
-.linkActive:hover {
+.linkActive-ti:hover {
   user-select: none;
   cursor: default;
 }

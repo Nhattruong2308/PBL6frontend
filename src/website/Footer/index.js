@@ -14,20 +14,20 @@ import {
 const Footer = () => {
   return (
     <VStack
-      color="white"
+      color="#001858"
       as="footer"
-      bgColor="rgba(255,46,99,0.5)"
+      bgColor="rgb(243,210,193,0.8)"
       h="20%"
       w="100%"
       zIndex={"2"}
       spacing={"0"}
     >
-      <Box color="white" w="100%" h="25%">
+      <Box w="100%" h="25%">
         <Flex pl="10%" alignItems="center" pt="2px" pb="2px">
           <Image src={require("../../imgs/logo.png")} w="35px" mr="5px" />
           <Text fontSize="25px">ENGLISH ACADEMY</Text>
         </Flex>
-        <Divider />
+        <Divider bg="#FEF6E4" h="2px" />
       </Box>
       <HStack
         w="100%"

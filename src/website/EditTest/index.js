@@ -21,29 +21,27 @@ import { api } from "../../API/API";
 
 export default function EditTest(props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [title,setTitle] = useState(props.data.title)
-  const [duration,setDuration] = useState(props.data.duration)
-  const [total,setTotal] = useState(props.data.total_question)
-  const handlesubmit = (e)=> {
-    e.preventDefault()
-    const URL = api + `update_exam/${props.data.id}`
+  const [title, setTitle] = useState(props.data.title);
+  const [duration, setDuration] = useState(props.data.duration);
+  const [total, setTotal] = useState(props.data.total_question);
+  const handlesubmit = (e) => {
+    e.preventDefault();
+    const URL = api + `update_exam/${props.data.id}`;
     const data = {
       title: title,
       duration: duration,
       total_question: total,
-    }
-    axios.put(URL,data,
-      {
-        headers:{
-          'Content-Type': 'application/json',
-        }
-      }
-      ).then(
-        res => {
-          console.log(res.data)
-        }
-    )
-  }
+    };
+    axios
+      .put(URL, data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then((res) => {
+        console.log(res.data);
+      });
+  };
   return (
     <>
       <IconButton
@@ -62,7 +60,7 @@ export default function EditTest(props) {
         preserveScrollBarGap={true}
       >
         <ModalOverlay />
-        <ModalContent bg="#252A34" color="white" alignSelf={"center"}>
+        <ModalContent bg="#55423d" color="#FEF6E4" alignSelf={"center"}>
           <ModalHeader>Chỉnh sửa bài test</ModalHeader>
           <ModalCloseButton />
           <Divider />
@@ -81,7 +79,7 @@ export default function EditTest(props) {
                       type="text"
                       placeholder="Nhập tên bài test"
                       value={title}
-                      onChange={(e)=> setTitle(e.target.value)}
+                      onChange={(e) => setTitle(e.target.value)}
                     />
                   </Box>
                 </Center>
@@ -98,7 +96,7 @@ export default function EditTest(props) {
                       type="text"
                       placeholder="Nhập thời lượng bài test"
                       value={duration}
-                      onChange={(e)=> setDuration(e.target.value)}
+                      onChange={(e) => setDuration(e.target.value)}
                     />
                   </Box>
                 </Center>
@@ -115,7 +113,7 @@ export default function EditTest(props) {
                       type="text"
                       placeholder="Nhập số lượng câu"
                       value={total}
-                      onChange={(e)=> setTotal(e.target.value)}
+                      onChange={(e) => setTotal(e.target.value)}
                     />
                   </Box>
                 </Center>

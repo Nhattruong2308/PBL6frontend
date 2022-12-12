@@ -9,13 +9,13 @@
   margin: 0px 3px;
   cursor: pointer;
   border-radius: 8%;
-  background: rgba(37, 42, 52);
+  background: #55423d;
 }
-.page-link {
+.page-link-t {
   font-size: 20px;
 }
 
-.first-link {
+.first-link-t {
   font-size: 25px;
   font-weight: bold;
   margin-bottom: 3px;

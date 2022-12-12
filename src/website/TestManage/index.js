@@ -19,28 +19,26 @@ import { api } from "../../API/API";
 
 export default function TestManage() {
   const context = useOutletContext();
-  const data = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
-  const [exam,setExam] = useState([])
-  useEffect(()=>{
-    const URL = api + `exams_by_user/${JSON.parse(localStorage.getItem('user'))['id']}`
+  const [exam, setExam] = useState([]);
+  useEffect(() => {
+    const URL =
+      api + `exams_by_user/${JSON.parse(localStorage.getItem("user"))["id"]}`;
 
-    axios.get(URL).then(
-      res => {
-        console.log(res.data)
-        setExam(res.data)
-      }
-    )
-  },[])
-  useEffect(()=>{
-    console.log(exam)
-  },[exam])
-  console.log(exam)
+    axios.get(URL).then((res) => {
+      console.log(res.data);
+      setExam(res.data);
+    });
+  }, []);
+  useEffect(() => {
+    console.log(exam);
+  }, [exam]);
+  console.log(exam);
 
   if (context[0] === "0")
     return (
       <Center>
         <Box w="90%">
-          <Box bg="rgba(37,42,52,0.5)" minH="50vh" w="100%">
+          <Box bg="rgb(85,66,61,0.8)" w="100%">
             <Flex
               color={"white"}
               w="100%"
@@ -57,7 +55,7 @@ export default function TestManage() {
             <HStack w="100%" alignItems="center" px={7}>
               <CreateTest />
               <Spacer />
-              <Text color="white">Tổng số bài test: 10</Text>
+              <Text color="white">Tổng số bài test: {exam.data?.length}</Text>
             </HStack>
             <Center>
               <SimpleGrid columns={2} spacing={"6"} p={6}>
@@ -74,7 +72,7 @@ export default function TestManage() {
   return (
     <Center>
       <Box w="90%">
-        <Box bg="rgba(37,42,52,0.5)" minH="50vh">
+        <Box bg="rgb(85,66,61,0.8)">
           <Flex color={"white"} w="100%" alignItems="center" p="10px" h="50px">
             <HiWrenchScrewdriver fontSize="20px" />
             <Text fontWeight="bold" ml="10px">
@@ -85,7 +83,7 @@ export default function TestManage() {
           <HStack w="100%" alignItems="center" px={7}>
             <CreateTest />
             <Spacer />
-            <Text color="white">Tổng số bài test: 10</Text>
+            <Text color="white">Tổng số bài test: {exam.data?.length}</Text>
           </HStack>
           <Center>
             <SimpleGrid columns={2} spacing={"8"} p={6}>

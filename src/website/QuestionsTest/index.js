@@ -110,12 +110,12 @@ export default function QuestionsTest() {
     }
   };
   return (
-    <>
+    <Box w="100%">
       <Box
         w="100%"
-        bg="white"
+        bg="#FEF6E4"
         boxShadow="2px 2px 2px 2px #D9D9D9"
-        pl={6}
+        px={6}
         py={2}
         borderRadius={8}
       >
@@ -123,7 +123,7 @@ export default function QuestionsTest() {
           Các câu hỏi đã làm:
         </Text>
         <Flex
-          maxW="1150px"
+          w="100%"
           overflowX={"scroll"}
           scrollSnapType="x"
           scrollBehavior="smooth"
@@ -155,6 +155,6 @@ export default function QuestionsTest() {
           onChange={(pageNumber) => getTestsData(pageNumber)}
         />
       </Box>
-    </>
+    </Box>
   );
 }
