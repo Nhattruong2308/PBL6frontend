@@ -2,11 +2,13 @@ import {
   Button,
   Flex,
   HStack,
+  IconButton,
   Image,
   Spacer,
   Stack,
   Text,
 } from "@chakra-ui/react";
+import { BiHistory } from "react-icons/bi";
 import axios from "axios";
 import React from "react";
 import { useNavigate } from "react-router-dom";
@@ -14,6 +16,9 @@ import { api } from "../../../API/API";
 
 const Tag = (props) => {
   const navigate = useNavigate();
+  const ViewHistory = () => {
+    navigate(`/history/${props.data.id}`);
+  };
   if (props.left === "0") {
     return (
       <Stack
@@ -30,12 +35,23 @@ const Tag = (props) => {
         }}
         transition="all 0.5s"
       >
-        <Flex alignItems="center" mb="12px">
+        <HStack alignItems="center" mb="12px" w="100%">
           <Image src={require("../../../imgs/logo.png")} w="30px" h="30px" />
           <Text ml="5px" color={"#8BD3DD"} fontSize="16px">
             ENGLISH <span style={{ color: "#F582AE" }}>ACADEMY</span>
           </Text>
-        </Flex>
+          <Spacer />
+          <IconButton
+            float={"right"}
+            as={BiHistory}
+            color="white"
+            bg="#8BD3DD"
+            colorScheme="blue"
+            size="xs"
+            fontSize="15px"
+            onClick={ViewHistory}
+          />
+        </HStack>
         <Text color={"#001858"} fontWeight="bold" fontSize="16px">
           {props.data.title}
         </Text>
@@ -63,31 +79,34 @@ const Tag = (props) => {
             h="24px"
             fontSize="12px"
             onClick={() => {
-              if (localStorage.getItem("user")){
-                localStorage.setItem('test',JSON.stringify(props.data))
-                const URL_2 = api + "Enroll_exam"
+              if (localStorage.getItem("user")) {
+                localStorage.setItem("test", JSON.stringify(props.data));
+                const URL_2 = api + "Enroll_exam";
                 const data_2 = {
-                  user_id : Number(JSON.parse(localStorage.getItem('user'))['id']),
-                  exam_id : Number(props.data.id),
-                }
-                console.log(data_2)
-                axios.get(URL_2, {
-                  params: {
-                    user_id : Number(JSON.parse(localStorage.getItem('user'))['id']),
-                    exam_id : Number(props.data.id),
-                  }
-                }).then(
-                  res => {
-                    console.log(res.data)
+                  user_id: Number(
+                    JSON.parse(localStorage.getItem("user"))["id"]
+                  ),
+                  exam_id: Number(props.data.id),
+                };
+                console.log(data_2);
+                axios
+                  .get(URL_2, {
+                    params: {
+                      user_id: Number(
+                        JSON.parse(localStorage.getItem("user"))["id"]
+                      ),
+                      exam_id: Number(props.data.id),
+                    },
+                  })
+                  .then((res) => {
+                    console.log(res.data);
                     window.open(
                       `/testing/page/${1}`,
                       "_blank",
                       "location=yes,resizable=no,status=yes,height=5000,width=5000"
                     );
-                  }
-                )
-              }
-              else navigate("/login");
+                  });
+              } else navigate("/login");
             }}
           >
             BẮT ĐẦU
@@ -111,12 +130,23 @@ const Tag = (props) => {
       }}
       transition="all 0.5s"
     >
-      <Flex alignItems="center" mb="15px">
+      <HStack alignItems="center" mb="15px" w="100%">
         <Image src={require("../../../imgs/logo.png")} w="35px" h="35px" />
         <Text ml="5px" color={"#8BD3DD"}>
           ENGLISH <span style={{ color: "#F582AE" }}>ACADEMY</span>
         </Text>
-      </Flex>
+        <Spacer />
+        <IconButton
+          float={"right"}
+          as={BiHistory}
+          color="white"
+          bg="#8BD3DD"
+          colorScheme="blue"
+          size="xs"
+          fontSize="15px"
+          onClick={ViewHistory}
+        />
+      </HStack>
       <Text color={"#001858"} fontWeight="bold">
         {props.data.title}
       </Text>
@@ -144,31 +174,32 @@ const Tag = (props) => {
           h="30px"
           fontSize="15px"
           onClick={() => {
-            if (localStorage.getItem("user")){
-              localStorage.setItem('test',JSON.stringify(props.data))
-              const URL_2 = api + "Enroll_exam"
+            if (localStorage.getItem("user")) {
+              localStorage.setItem("test", JSON.stringify(props.data));
+              const URL_2 = api + "Enroll_exam";
               const data_2 = {
-                user_id : Number(JSON.parse(localStorage.getItem('user'))['id']),
-                exam_id : Number(props.data.id),
-              }
-              console.log(data_2)
-              axios.get(URL_2, {
-                params: {
-                  user_id : Number(JSON.parse(localStorage.getItem('user'))['id']),
-                  exam_id : Number(props.data.id),
-                }
-              }).then(
-                res => {
-                  console.log(res.data)
+                user_id: Number(JSON.parse(localStorage.getItem("user"))["id"]),
+                exam_id: Number(props.data.id),
+              };
+              console.log(data_2);
+              axios
+                .get(URL_2, {
+                  params: {
+                    user_id: Number(
+                      JSON.parse(localStorage.getItem("user"))["id"]
+                    ),
+                    exam_id: Number(props.data.id),
+                  },
+                })
+                .then((res) => {
+                  console.log(res.data);
                   window.open(
                     `/testing/page/${1}`,
                     "_blank",
                     "location=yes,resizable=no,status=yes,height=5000,width=5000"
                   );
-                }
-              )
-            }
-            else navigate("/login");
+                });
+            } else navigate("/login");
           }}
         >
           BẮT ĐẦU

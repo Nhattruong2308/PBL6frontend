@@ -14,7 +14,7 @@ import {
 } from "@chakra-ui/react";
 import Header from "../Header";
 import Footer from "../Footer";
-import { MdOutlineSaveAlt } from "react-icons/md";
+import { SiPytest } from "react-icons/si";
 import { HiWrenchScrewdriver } from "react-icons/hi2";
 import { AiOutlineMenu, AiOutlineLogout } from "react-icons/ai";
 import { ImHome } from "react-icons/im";
@@ -66,16 +66,19 @@ function Home() {
               >
                 <Center mt="70px">
                   <Box>
-                    <Image
-                      src={require("../../imgs/img1.png")}
-                      w="120px"
-                      h="120px"
-                      border={"2px"}
-                      borderColor="#08D9D6"
-                    />
-                    <Text color="white">
-                      {JSON.parse(localStorage.getItem("user")).name}
-                    </Text>
+                    <Center>
+                      <Box w="120px">
+                        <Image
+                          src={require("../../imgs/img1.png")}
+                          w="120px"
+                          h="120px"
+                          borderRadius="50%"
+                        />
+                        <Text color="white" textAlign="center">
+                          {JSON.parse(localStorage.getItem("user")).name}
+                        </Text>
+                      </Box>
+                    </Center>
                     <List
                       color="white"
                       spacing={"3"}
@@ -90,8 +93,10 @@ function Home() {
                         </Link>
                       </ListItem>
                       <ListItem _hover={{ color: "#08D9D6" }}>
-                        <ListIcon as={MdOutlineSaveAlt} />
-                        Bài test đã lưu
+                        <Link to="/tests">
+                          <ListIcon as={SiPytest} />
+                          Làm bài kiểm tra
+                        </Link>
                       </ListItem>
                       <ListItem _hover={{ color: "#08D9D6" }}>
                         <Link to="/tests-manage">

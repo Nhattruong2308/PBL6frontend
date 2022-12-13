@@ -11,6 +11,7 @@ import Testing from "./website/Testing";
 import QuestionsTest from "./website/QuestionsTest";
 import TestManage from "./website/TestManage";
 import TestInfo from "./website/TestInfo";
+import History from "./website/History";
 function App() {
   return (
     <Box className="bg" scrollBehavior={"smooth"}>
@@ -19,6 +20,7 @@ function App() {
         <Route path="/" element={<Home />}>
           <Route path="" element={<ImgPredict />} />
           <Route path="tests" element={<ListTag />} />
+          <Route path="history/:id" element={<History />} />
           <Route path="tests/page/:id" element={<ListTag />} />
           <Route path="tests-manage" element={<TestManage />} />
           <Route path="test-info/:id" element={<TestInfo />} />
