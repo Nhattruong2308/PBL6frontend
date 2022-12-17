@@ -20,7 +20,7 @@ import axios from "axios";
 import React, { useCallback, useState } from "react";
 import { IoAddCircle } from "react-icons/io5";
 import { MdFileUpload } from "react-icons/md";
-import { api } from "../../API/API";
+import { api, api_model } from "../../API/API";
 
 export default function CreateQuestion(props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -66,10 +66,13 @@ export default function CreateQuestion(props) {
       console.log(i[1]);
     }
     axios
-      .post("http://127.0.0.1:5000/predict", formdata, {
+      .post( api_model + "predict", formdata, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
+        headers: new Headers({
+          "ngrok-skip-browser-warning": "69420",
+        }),
         mode: "no-cors",
       })
       .then((res) => {
