@@ -67,7 +67,7 @@ const Tag = (props) => {
             borderRadius="50%"
           />
           <Text fontSize={"14px"} color={"#001858"}>
-            John Wick
+            {props.data.user.name}
           </Text>
           <Spacer />
           <Button
@@ -162,7 +162,7 @@ const Tag = (props) => {
           borderRadius="50%"
         />
         <Text fontSize={"17px"} color={"#001858"}>
-          John Wick
+          {props.data.user.name}
         </Text>
         <Spacer />
         <Button

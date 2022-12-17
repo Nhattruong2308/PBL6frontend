@@ -1,2 +1,3 @@
-export const api = "http://127.0.0.1:8000/api/"
-export const api_image = "http://127.0.0.1:8000/storage/"
+export const api = "https://backend-production-98b0.up.railway.app/api/"
+export const api_image = "https://backend-production-98b0.up.railway.app/storage/"
+export const api_model = "https://a839-183-80-224-24.ap.ngrok.io/"
