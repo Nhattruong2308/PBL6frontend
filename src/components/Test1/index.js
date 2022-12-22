@@ -22,6 +22,7 @@ export default function Test1(props) {
     const URL = api + `delete_exam/${props.data.id}`;
     axios.delete(URL).then((res) => {
       console.log(res.data);
+      props.updateData();
     });
   };
   return (
@@ -47,7 +48,7 @@ export default function Test1(props) {
             navigate(`/test-info/${props.data.id}`);
           }}
         />
-        <EditTest data={props.data} />
+        <EditTest data={props.data} updateData={props.updateData} />
         <IconButton
           bg="#FF2E63"
           icon={<AiFillDelete />}
