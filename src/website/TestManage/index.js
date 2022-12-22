@@ -29,10 +29,15 @@ export default function TestManage() {
       setExam(res.data);
     });
   }, []);
-  useEffect(() => {
-    console.log(exam);
-  }, [exam]);
-  console.log(exam);
+  const updateData = () => {
+    const URL =
+      api + `exams_by_user/${JSON.parse(localStorage.getItem("user"))["id"]}`;
+
+    axios.get(URL).then((res) => {
+      console.log(res.data);
+      setExam(res.data);
+    });
+  };
 
   if (context[0] === "0")
     return (
@@ -53,14 +58,14 @@ export default function TestManage() {
             </Flex>
             <Divider />
             <HStack w="100%" alignItems="center" px={7}>
-              <CreateTest />
+              <CreateTest updateData={updateData} />
               <Spacer />
               <Text color="white">Tổng số bài test: {exam.data?.length}</Text>
             </HStack>
             <Center>
               <SimpleGrid columns={2} spacing={"6"} p={6}>
                 {exam.data?.map((item) => (
-                  <Test1 data={item} />
+                  <Test1 data={item} updateData={updateData} />
                 ))}
               </SimpleGrid>
             </Center>
@@ -81,14 +86,14 @@ export default function TestManage() {
           </Flex>
           <Divider />
           <HStack w="100%" alignItems="center" px={7}>
-            <CreateTest />
+            <CreateTest updateData={updateData} />
             <Spacer />
             <Text color="white">Tổng số bài test: {exam.data?.length}</Text>
           </HStack>
           <Center>
             <SimpleGrid columns={2} spacing={"8"} p={6}>
               {exam.data?.map((item) => (
-                <Test2 data={item} />
+                <Test2 data={item} updateData={updateData} />
               ))}
             </SimpleGrid>
           </Center>

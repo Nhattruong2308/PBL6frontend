@@ -15,6 +15,7 @@ import {
   ModalOverlay,
   Text,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 import axios from "axios";
 import React, { useCallback, useState } from "react";
@@ -24,6 +25,7 @@ import { api, api_model } from "../../API/API";
 
 export default function CreateQuestion(props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const toast = useToast();
   const [imgPre, setImgPre] = useState(require("../../imgs/img_predict.png"));
   const [img, setImg] = useState("");
   const [A, setA] = useState("");
@@ -31,7 +33,6 @@ export default function CreateQuestion(props) {
   const [C, setC] = useState("");
   const [D, setD] = useState("");
   const [answer, setAnswer] = useState("");
-  const [title, setTitle] = useState("");
   const handlecreateBase64 = useCallback(async (e) => {
     const file = e.target.files[0];
     setImg(file);
@@ -66,7 +67,7 @@ export default function CreateQuestion(props) {
       console.log(i[1]);
     }
     axios
-      .post( api_model + "predict", formdata, {
+      .post(api_model + "predict", formdata, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -91,11 +92,11 @@ export default function CreateQuestion(props) {
     const URL = api + "addquestion";
     const formdata = new FormData();
     formdata.append("image", img);
-    formdata.append("title", "Predict this image");
     formdata.append("A", A);
     formdata.append("B", B);
     formdata.append("C", C);
     formdata.append("D", D);
+    formdata.append("title", "title");
     formdata.append("answer", answer);
     formdata.append("exam_id", props.idTest);
     axios
@@ -106,10 +107,35 @@ export default function CreateQuestion(props) {
       })
       .then((res) => {
         console.log(res.data);
+        setAnswer("");
+        setA("");
+        setB("");
+        setC("");
+        setD("");
+        setImg("");
+        setImgPre(require("../../imgs/img_predict.png"));
+        toast({
+          title: "Successfully!",
+          description: "Đã thêm 1 question.",
+          status: "success",
+          duration: 1500,
+          isClosable: true,
+        });
+        props.updateTable();
       })
       .catch((error) => {
         console.log(error);
       });
+  };
+
+  const handleReset = () => {
+    setAnswer("");
+    setA("");
+    setB("");
+    setC("");
+    setD("");
+    setImg("");
+    setImgPre(require("../../imgs/img_predict.png"));
   };
   return (
     <>
@@ -292,6 +318,7 @@ export default function CreateQuestion(props) {
                       colorScheme="blue"
                       color="white"
                       size="sm"
+                      onClick={handleReset}
                     >
                       Reset
                     </Button>
