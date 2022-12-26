@@ -15,17 +15,18 @@ import {
   ModalOverlay,
   Text,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 import axios from "axios";
 import React, { useCallback, useState } from "react";
 import { FaEdit } from "react-icons/fa";
-import { IoAddCircle } from "react-icons/io5";
 import { MdFileUpload } from "react-icons/md";
-import { api, api_image } from "../../API/API";
+import { api, api_image, api_model } from "../../API/API";
 
 export default function EditQuestion(props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  // const [imgPre, setImgPre] = useState(require("../../imgs/img_predict.png"));
+  const toast = useToast();
+  console.log(props.question);
   const [imgPre, setImgPre] = useState(api_image + props.question.image);
   const [img, setImg] = useState("");
   const [A, setA] = useState(props.question.A);
@@ -33,7 +34,6 @@ export default function EditQuestion(props) {
   const [C, setC] = useState(props.question.C);
   const [D, setD] = useState(props.question.D);
   const [answer, setAnswer] = useState(props.question.answer);
-  const [title, setTitle] = useState(props.question.title);
   const handlecreateBase64 = useCallback(async (e) => {
     const file = e.target.files[0];
     setImg(file);
@@ -57,7 +57,8 @@ export default function EditQuestion(props) {
       };
     });
   };
-  const onSave = () => {
+  const onSave = (e) => {
+    e.preventDefault();
     const URL = api + `update_question/${props.question.id}`;
     const formdata = new FormData();
     formdata.append("image", img);
@@ -75,6 +76,14 @@ export default function EditQuestion(props) {
       })
       .then((res) => {
         console.log(res.data);
+        toast({
+          title: "Successfully!",
+          description: "Đã sửa question.",
+          status: "success",
+          duration: 1500,
+          isClosable: true,
+        });
+        props.updateTable();
       })
       .catch((error) => {
         console.log(error);
@@ -91,10 +100,13 @@ export default function EditQuestion(props) {
       console.log(i[1]);
     }
     axios
-      .post("http://127.0.0.1:5000/predict", formdata, {
+      .post(api_model + "predict", formdata, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
+        headers: new Headers({
+          "ngrok-skip-browser-warning": "69420",
+        }),
         mode: "no-cors",
       })
       .then((res) => {
@@ -108,6 +120,16 @@ export default function EditQuestion(props) {
       .catch((error) => {
         console.log(error);
       });
+  };
+
+  const handleReset = () => {
+    setAnswer("");
+    setA("");
+    setB("");
+    setC("");
+    setD("");
+    setImg("");
+    setImgPre(require("../../imgs/img_predict.png"));
   };
   return (
     <>
@@ -125,7 +147,7 @@ export default function EditQuestion(props) {
           <ModalCloseButton />
           <Divider />
           <ModalBody>
-            <form>
+            <form onSubmit={onSave}>
               <Box w="100%">
                 <Flex w="100%">
                   <Box flex={7} py={3}>
@@ -274,7 +296,8 @@ export default function EditQuestion(props) {
                       color="white"
                       mr={4}
                       size="sm"
-                      onClick={onSave}
+                      onClick={onClose}
+                      type="submit"
                     >
                       Lưu
                     </Button>
@@ -283,6 +306,7 @@ export default function EditQuestion(props) {
                       colorScheme="blue"
                       color="white"
                       size="sm"
+                      onClick={handleReset}
                     >
                       Reset
                     </Button>

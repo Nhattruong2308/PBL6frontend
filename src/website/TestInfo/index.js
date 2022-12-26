@@ -6,6 +6,7 @@ import {
   Icon,
   Spacer,
   Text,
+  useToast,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { BiArrowBack } from "react-icons/bi";
@@ -20,6 +21,8 @@ import { api } from "../../API/API";
 import axios from "axios";
 export default function TestInfo() {
   const [CurrentPage, setCurrentPage] = useState(1);
+  const toast = useToast();
+  const [lData, setLData] = useState(0);
   const param = useParams();
   const [testData, setTestData] = useState([]);
   let history = useNavigate();
@@ -30,6 +33,8 @@ export default function TestInfo() {
     axios.get(URL).then((res) => {
       console.log(res.data);
       setTestData(res.data);
+      setLData(res.data.data.length);
+      console.log(res.data.data.length);
     });
   }, [CurrentPage]);
   console.log(testData);
@@ -38,6 +43,17 @@ export default function TestInfo() {
     if (CurrentPage !== pageNumber) {
       setCurrentPage(pageNumber);
     }
+  };
+
+  const updateTable = () => {
+    const URL =
+      api + `questiosns_by_exam/${Number(param.id)}/?page=${CurrentPage}`;
+    axios.get(URL).then((res) => {
+      console.log(res.data);
+      setTestData(res.data);
+      setLData(res.data.data.length);
+      console.log(res.data.data.length);
+    });
   };
   return (
     <Center>
@@ -62,7 +78,10 @@ export default function TestInfo() {
 
             <Spacer />
             <Text>Thêm question</Text>
-            <CreateQuestion idTest={Number(param.id)} />
+            <CreateQuestion
+              idTest={Number(param.id)}
+              updateTable={updateTable}
+            />
           </HStack>
           <Box className="table-question">
             <table
@@ -71,7 +90,6 @@ export default function TestInfo() {
             >
               <tr>
                 <th>Test ID</th>
-                <th>Mô tả</th>
                 <th>Đáp án A</th>
                 <th>Đáp án B</th>
                 <th>Đáp án C</th>
@@ -80,9 +98,8 @@ export default function TestInfo() {
               </tr>
               {testData.data?.map((i) => {
                 return (
-                  <tr>
+                  <tr key={i.id}>
                     <td>{i.exam_id}</td>
-                    <td>{i.title}</td>
                     <td
                       style={i.answer === i.A ? { background: "#78FF9E" } : {}}
                     >
@@ -106,7 +123,10 @@ export default function TestInfo() {
                     <td>
                       <Center>
                         <Flex>
-                          <EditQuestion question={i} />
+                          <EditQuestion
+                            question={i}
+                            updateTable={updateTable}
+                          />
                           <Icon
                             as={AiFillDelete}
                             color="red"
@@ -116,6 +136,16 @@ export default function TestInfo() {
                                 api + `delete_question/${Number(i.id)}`;
                               axios.delete(URL).then((res) => {
                                 console.log(res.data);
+                                toast({
+                                  title: "Successfully!",
+                                  description: "Đã xóa question.",
+                                  status: "success",
+                                  duration: 1500,
+                                  isClosable: true,
+                                });
+                                if (lData === 1 && CurrentPage === 2)
+                                  setCurrentPage(1);
+                                updateTable();
                               });
                             }}
                           />

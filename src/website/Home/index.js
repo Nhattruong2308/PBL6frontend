@@ -74,7 +74,11 @@ function Home() {
                           h="120px"
                           borderRadius="50%"
                         />
-                        <Text color="white" textAlign="center">
+                        <Text
+                          color="white"
+                          textAlign="center"
+                          fontWeight={"bold"}
+                        >
                           {JSON.parse(localStorage.getItem("user")).name}
                         </Text>
                       </Box>
@@ -82,7 +86,7 @@ function Home() {
                     <List
                       color="white"
                       spacing={"3"}
-                      fontSize="15px"
+                      fontSize="18px"
                       mt="20px"
                       cursor="pointer"
                     >

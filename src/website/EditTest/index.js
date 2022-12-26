@@ -13,6 +13,7 @@ import {
   ModalOverlay,
   Text,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 import axios from "axios";
 import React, { useState } from "react";
@@ -21,6 +22,7 @@ import { api } from "../../API/API";
 
 export default function EditTest(props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const toast = useToast();
   const [title, setTitle] = useState(props.data.title);
   const [duration, setDuration] = useState(props.data.duration);
   const [total, setTotal] = useState(props.data.total_question);
@@ -40,6 +42,14 @@ export default function EditTest(props) {
       })
       .then((res) => {
         console.log(res.data);
+        toast({
+          title: "Successfully!",
+          description: "Đã sửa bài test.",
+          status: "success",
+          duration: 1500,
+          isClosable: true,
+        });
+        props.updateData();
       });
   };
   return (

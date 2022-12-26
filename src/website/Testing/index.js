@@ -20,32 +20,30 @@ export default function Testing() {
   }, []);
 
   const handleTabClose = (event) => {
-    const URL = api + "submit_exam"
+    const URL = api + "submit_exam";
     const data = {
-      exam_id: JSON.parse(localStorage.getItem('test'))['id'],
-      user_id: JSON.parse(localStorage.getItem('user'))['id'],
-      answer: JSON.parse(localStorage.getItem('answer')),
-    }
-    console.log(data)
-    axios.get(URL,
-      {
-        params:{
-          exam_id: JSON.parse(localStorage.getItem('test'))['id'],
-          user_id: JSON.parse(localStorage.getItem('user'))['id'],
-          answer: JSON.parse(localStorage.getItem('answer')),
-        }
-      }
-      ).then(
-      res => {
-        console.log(res.data)
-        localStorage.removeItem('test')
-        localStorage.removeItem('answer')
+      exam_id: JSON.parse(localStorage.getItem("test"))["id"],
+      user_id: JSON.parse(localStorage.getItem("user"))["id"],
+      answer: JSON.parse(localStorage.getItem("answer")),
+    };
+    console.log(data);
+    axios
+      .get(URL, {
+        params: {
+          exam_id: JSON.parse(localStorage.getItem("test"))["id"],
+          user_id: JSON.parse(localStorage.getItem("user"))["id"],
+          answer: JSON.parse(localStorage.getItem("answer")),
+        },
+      })
+      .then((res) => {
+        console.log(res.data);
+        localStorage.removeItem("test");
+        localStorage.removeItem("answer");
         window.close();
-      }
-    )
+      });
   };
-  const duration = Number(JSON.parse(localStorage.getItem('test'))['duration'])
-  const [countdown, setCountdown] = useState(duration*60);
+  const duration = Number(JSON.parse(localStorage.getItem("test"))["duration"]);
+  const [countdown, setCountdown] = useState(duration * 60);
   const timerId = useRef();
   useEffect(() => {
     timerId.current = setInterval(() => {
@@ -56,28 +54,26 @@ export default function Testing() {
   useEffect(() => {
     if (countdown < 0) {
       clearInterval(timerId.current);
-      const URL = api + "submit_exam"
+      const URL = api + "submit_exam";
       const data = {
-        exam_id: JSON.parse(localStorage.getItem('test'))['id'],
-        user_id: JSON.parse(localStorage.getItem('user'))['id'],
-        answer: JSON.parse(localStorage.getItem('answer')),
-      }
-      axios.get(URL, 
-        {
-          params:{
-            exam_id: JSON.parse(localStorage.getItem('test'))['id'],
-            user_id: JSON.parse(localStorage.getItem('user'))['id'],
-            answer: JSON.parse(localStorage.getItem('answer')),
-          }
-        }
-        ).then(
-        res => {
-          console.log(res.data)
-          localStorage.removeItem('test')
-          localStorage.removeItem('answer')
+        exam_id: JSON.parse(localStorage.getItem("test"))["id"],
+        user_id: JSON.parse(localStorage.getItem("user"))["id"],
+        answer: JSON.parse(localStorage.getItem("answer")),
+      };
+      axios
+        .get(URL, {
+          params: {
+            exam_id: JSON.parse(localStorage.getItem("test"))["id"],
+            user_id: JSON.parse(localStorage.getItem("user"))["id"],
+            answer: JSON.parse(localStorage.getItem("answer")),
+          },
+        })
+        .then((res) => {
+          console.log(res.data);
+          localStorage.removeItem("test");
+          localStorage.removeItem("answer");
           window.close();
-        }
-      )
+        });
     }
   }, [countdown]);
   return (
@@ -89,8 +85,8 @@ export default function Testing() {
       py={5}
     >
       <Box w="13%">
-        <Box pos="fixed" top={5} left={3}>
-          <Box w="80%">
+        <Center pos="fixed" top={5} left={0} w="13%">
+          <Box w="85%">
             <Center w="100%" bg="#55423D" py={3}>
               <Box w="60%">
                 <Image
@@ -101,8 +97,8 @@ export default function Testing() {
                   w="100%"
                   h="100%"
                 />
-                <Text color="white" fontSize="17px">
-                  John Wick
+                <Text color="white" fontSize="17px" textAlign="center">
+                  {JSON.parse(localStorage.getItem("test"))["user"]["name"]}
                 </Text>
               </Box>
             </Center>
@@ -148,26 +144,28 @@ export default function Testing() {
               </Button>
             </Box>
           </Box>
-        </Box>
+        </Center>
       </Box>
 
-      <Box w="87%" float={"right"} pr={10}>
-        <Box
-          w="100%"
-          p={1}
-          fontSize={"30px"}
-          color="#FEF6E4"
-          bg="#55423D"
-          textAlign={"center"}
-          fontWeight="bold"
-          textTransform="uppercase"
-        >
-          {JSON.parse(localStorage.getItem('test'))['title']}
+      <Center w="87%" float={"right"}>
+        <Box w="97%">
+          <Box
+            w="100%"
+            p={1}
+            fontSize={"30px"}
+            color="#FEF6E4"
+            bg="#55423D"
+            textAlign={"center"}
+            fontWeight="bold"
+            textTransform="uppercase"
+          >
+            {JSON.parse(localStorage.getItem("test"))["title"]}
+          </Box>
+          <Box w="100%" bg="#F3D2C1" px={8} py={3}>
+            <Outlet />
+          </Box>
         </Box>
-        <Box w="100%" bg="#F3D2C1" px={8} py={3}>
-          <Outlet />
-        </Box>
-      </Box>
+      </Center>
     </Flex>
   );
 }
